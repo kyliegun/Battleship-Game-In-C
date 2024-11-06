@@ -17,3 +17,13 @@ Student #: 400507554
 GitHub ID: yalexisq
 
 We're going to make a C app for a battleship like game where you can play against another player or a CPU.
+The program will run in the terminal and use ASCII art to display the game state after each turn. 
+The player can enter a valid coordinate to fire and the program will check to see if it hits or misses the opponent.
+There will be varying opponent difficulty which will determine which AI is used. A player wins when all opponent ships
+are sunk.
+
+The functionalities and responsibilities are:
+Testing/CI pipeline - Connor
+Main - Kylie
+Game logic - Alexis
+Opponent AI - Lukas 
