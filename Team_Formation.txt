@@ -6,4 +6,4 @@ GitHub ID: LukasBuehlmann
 
 Name: Connor McEachern
 Student #: 500527622
-GitHub ID: LukasBuehlmann
+GitHub ID: ConnorMcEachern
