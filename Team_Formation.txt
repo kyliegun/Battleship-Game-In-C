@@ -6,4 +6,12 @@ GitHub ID: LukasBuehlmann
 
 Name: Connor McEachern
 Student #: 500527622
-GitHub ID: ConnorMcEachern
+GitHub ID: LukasBuehlmann
+
+Name: Kylie Gun
+Student #: 400524717
+GitHub ID: kyliegun
+
+Name: Alexis Quilatan
+Student #: 400507554
+GitHub ID: yalexisq
