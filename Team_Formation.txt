@@ -15,3 +15,5 @@ GitHub ID: kyliegun
 Name: Alexis Quilatan
 Student #: 400507554
 GitHub ID: yalexisq
+
+We're going to make a C app for a battleship like game where you can play against another player or a CPU.
