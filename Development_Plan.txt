@@ -70,5 +70,5 @@ increment, what is your target date for each increment?
 Game logic structure: November 15, 2024
 Game logic code: November 19, 2024
 Main code: November 19, 2024
-Opponent AI:
-Testing:
+Opponent AI: TBD
+Testing: TBD
