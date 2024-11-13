@@ -27,7 +27,11 @@ High Level Description: Be as detailed as you can for each of the following:
 Each team member describing their role and what they will deliver:
 
 Lukas:
-
+I will be creating the computer opponent that the user can play against. It will have multiple levels of difficulty that can
+be specified by a flag when running the initial command. Each level of difficulty will use a better strategy than the last 
+which leaves room for increments in development. An example would be that the easiest difficulty is completely random and 
+the hardest difficulty chooses the optimal move each turn. Methods will be controlled by main and will simulate the same 
+actions as a player would. 
 
 Connor:
 I will be in charge of testing and CI pipeline integration. I will set up test cases and ensure that new developments follow the design specs.
