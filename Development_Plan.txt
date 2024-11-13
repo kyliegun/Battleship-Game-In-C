@@ -28,7 +28,8 @@ by arranging ships on a grid and taking turns to locate and sink the opponent’
 select coordinates, and track performance statistics, including what they hit or miss, and achievements at the end. A constraint for 
 this game would include not being able to place more than one ship on the same coordinates. The ships cannot overlap. Additionally, 
 the grid game board has constraints as well, and will need to ensure that ships are placed within grid boundaries. As for gameplay 
-constraints, the player can only go once before the next player’s turn.
+constraints, the player can only go once before the next player’s turn. There is also a gameplay constraint of only being allowed to 
+shoot within the size of the board. 
 
 
 Each team member describing their role and what they will deliver:
@@ -66,4 +67,33 @@ Additionally, I'll manage game states, such as tracking hits, misses, and win co
 
 The Increments (at least 1): What functionality from each team member will be in each 
 increment, what is your target date for each increment?
+
+Increment 1 - Target date Nov. 20, 2024:
+  Program can be run from terminal with flags for playing against computer. There is a proper --help option
+  and documentation. A workflow and test cases are set up for a CI pipeline. There is one computer difficulty to play against.
+  
+  Lukas: make opponent AI
+  Connor: make workflow, tests, and README.md
+  Kylie: make a main function that calls game logic functions and handles flags
+  Alexis: create the game logic and functions
+
+Increment 2 - Target date Nov. 27, 2024:
+  Program now has options for multiple levels of computer difficulty. There is also an option to play against another
+  player on the same command line which is decided by a flag on program startup. Program can also be set to play on an 
+  N x M board size with a proportional amount of total ships. This is also specified as an optional flag.
+  
+  Lukas: create the new opponent difficulties
+  Connor: add more test cases for the new possible constraints and situations
+  Kylie: add more flag option handling and ability to play aginst another player
+  Alexis: add ability for game to work with a variable sized board
+
+Increment 3 - Target date Dec. 4, 2024:
+  Program has statistics and achievements tracked throughout game. Abilities or powerups are added to give players more 
+  creative options. Uses sockets to allow play against someone else on the same network (probably won't get this working
+  in time). 
+
+  Lukas: working on LAN play
+  Connor: helping to set up sockets and more test cases
+  Kylie: manage statistics and achievements
+  Alexis: add abilities functions to game logic
 
