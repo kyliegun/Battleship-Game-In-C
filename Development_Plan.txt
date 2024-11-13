@@ -33,9 +33,20 @@ Connor:
 
 
 Kylie:
+For this team project, I am responsible for the main function. I will be initializing key game elements such as the game boards, 
+setting up initial ship placements, and establishing a foundational game structure. Each player will start with an empty board, and 
+then proceed to handle the ship placements. I will also be coordinating with other team members, specifically game logic, to successfully 
+incorporate functions that are in the game logic program. The program will first call on functions from game logic to initialize the 
+empty board. To place the ships, the main program will use functions from the game logic to assign the ships their locations. 
+The main function will then go into a loop where players alternately attack each other's boards after ships have been configured. 
+Game logic functions will take care of things like hitting and missing, changing board states, and updating player statistics within this 
+loop. Lastly, once the game ends, so once all the ships of one player have sunk, the main function will conclude by displaying who won 
+and the final statistics.
 
 
 Alexis:
+
+
 
 
 
