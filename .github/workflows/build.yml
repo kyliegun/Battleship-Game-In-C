@@ -1,0 +1,25 @@
+name: build script for Battleship Game	
+
+on:							
+  push:
+    branches: [ "main" ]			
+
+jobs:
+  build:						
+    runs-on: ubuntu-latest			
+    steps:
+      - uses: actions/checkout@v4		
+
+      - name: build battle			
+        run: make battleship
+
+      - name: upload battle 
+        if: ${{ always() }}
+
+        uses: actions/upload-artifact@v4	
+        with:
+          name: Battle			
+          path: ./battle	
+        
+
+

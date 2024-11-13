@@ -39,7 +39,7 @@ I will be creating the computer opponent that the user can play against. It will
 be specified by a flag when running the initial command. Each level of difficulty will use a better strategy than the last 
 which leaves room for increments in development. An example would be that the easiest difficulty is completely random and 
 the hardest difficulty chooses the optimal move each turn. Methods will be controlled by main and will simulate the same 
-actions as a player would. 
+actions as a player would.
 
 Connor:
 I will be in charge of testing and CI pipeline integration. I will set up test cases and ensure that new developments follow the design specs.
@@ -61,8 +61,6 @@ Alexis: For our Battleship game, the functionality I'm in charge of is the game 
 The game logic includes setting up the game structure, handling the user’s choices, managing player turns, and determining ship placements. 
 This includes implementing functions for initializing the game board, validating player moves, and ensuring that ship positions follow game rules. 
 Additionally, I'll manage game states, such as tracking hits, misses, and win conditions.
-
-
 
 
 The Increments (at least 1): What functionality from each team member will be in each 
@@ -97,3 +95,10 @@ Increment 3 - Target date Dec. 4, 2024:
   Kylie: manage statistics and achievements
   Alexis: add abilities functions to game logic
 
+
+
+Game logic structure: November 15, 2024
+Game logic code: November 19, 2024
+Main code: November 19, 2024
+Opponent AI: TBD
+Testing: TBD
