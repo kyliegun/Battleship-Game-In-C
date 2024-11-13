@@ -23,6 +23,13 @@ High Level Description: Be as detailed as you can for each of the following:
   b. What is the context in which this app will be used?
   c. What constraints are there on your design?
 
+This app will be a strategic battleship game designed for single player or multiplayer use. Users can play against an AI or friends 
+by arranging ships on a grid and taking turns to locate and sink the opponent’s ships. With a simple setup and gameplay, players will 
+select coordinates, and track performance statistics, including what they hit or miss, and achievements at the end. A constraint for 
+this game would include not being able to place more than one ship on the same coordinates. The ships cannot overlap. Additionally, 
+the grid game board has constraints as well, and will need to ensure that ships are placed within grid boundaries. As for gameplay 
+constraints, the player can only go once before the next player’s turn.
+
 
 Each team member describing their role and what they will deliver:
 
