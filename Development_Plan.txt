@@ -30,7 +30,9 @@ Lukas:
 
 
 Connor:
-
+I will be in charge of testing and CI pipeline integration. I will set up test cases and ensure that new developments follow the design specs.
+This includes making a yml build script to upload the app with GitHub actions. I will communicate with team members to create test cases that are up to
+date with development so teammates can test their code as they develop. 
 
 Kylie:
 For this team project, I am responsible for the main function. I will be initializing key game elements such as the game boards, 
@@ -43,9 +45,10 @@ Game logic functions will take care of things like hitting and missing, changing
 loop. Lastly, once the game ends, so once all the ships of one player have sunk, the main function will conclude by displaying who won 
 and the final statistics.
 
-
-Alexis:
-
+Alexis: For our Battleship game, the functionality I'm in charge of is the game logic.
+The game logic includes setting up the game structure, handling the user’s choices, managing player turns, and determining ship placements. 
+This includes implementing functions for initializing the game board, validating player moves, and ensuring that ship positions follow game rules. 
+Additionally, I'll manage game states, such as tracking hits, misses, and win conditions.
 
 
 
