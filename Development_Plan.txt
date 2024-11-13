@@ -30,7 +30,9 @@ Lukas:
 
 
 Connor:
-
+I will be in charge of testing and CI pipeline integration. I will set up test cases and ensure that new developments follow the design specs.
+This includes making a yml build script to upload the app with GitHub actions. I will communicate with team members to create test cases that are up to
+date with development so teammates can test their code as they develop. 
 
 Kylie:
 For this team project, I am responsible for the main function. I will be initializing key game elements such as the game boards, 
