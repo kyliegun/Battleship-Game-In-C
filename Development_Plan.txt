@@ -1,0 +1,44 @@
+https://github.com/Sam-Scott-McMaster/the-team-assignment-team-19
+
+Name: Lukas Buehlmann
+Student #: 400527570
+GitHub ID: LukasBuehlmann
+
+Name: Connor McEachern
+Student #: 500527622
+GitHub ID: ConnorMcEachern
+
+Name: Kylie Gun
+Student #: 400524717
+GitHub ID: kyliegun
+
+Name: Alexis Quilatan
+Student #: 400507554
+GitHub ID: yalexisq
+
+Title of Project: 
+
+High Level Description: Be as detailed as you can for each of the following:
+  a. What kind of app, what will it do, how will the user use it?
+  b. What is the context in which this app will be used?
+  c. What constraints are there on your design?
+
+
+Each team member describing their role and what they will deliver:
+
+Lukas:
+
+
+Connor:
+
+
+Kylie:
+
+
+Alexis:
+
+
+
+The Increments (at least 1): What functionality from each team member will be in each 
+increment, what is your target date for each increment?
+
