@@ -34,11 +34,7 @@ constraints, the player can only go once before the next player’s turn.
 Each team member describing their role and what they will deliver:
 
 Lukas:
-I will be creating the computer opponent that the user can play against. It will have multiple levels of difficulty that can
-be specified by a flag when running the initial command. Each level of difficulty will use a better strategy than the last 
-which leaves room for increments in development. An example would be that the easiest difficulty is completely random and 
-the hardest difficulty chooses the optimal move each turn. Methods will be controlled by main and will simulate the same 
-actions as a player would. 
+
 
 Connor:
 I will be in charge of testing and CI pipeline integration. I will set up test cases and ensure that new developments follow the design specs.
@@ -62,8 +58,13 @@ This includes implementing functions for initializing the game board, validating
 Additionally, I'll manage game states, such as tracking hits, misses, and win conditions.
 
 
-
-
 The Increments (at least 1): What functionality from each team member will be in each 
 increment, what is your target date for each increment?
 
+
+
+Game logic structure: November 15, 2024
+Game logic code: November 19, 2024
+Main code: November 19, 2024
+Opponent AI:
+Testing:
