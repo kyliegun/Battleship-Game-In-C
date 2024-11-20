@@ -22,6 +22,12 @@
 // from our development plan, only has to work for a 10x10 to start
 void generateBoard(int shipBoard[][WIDTH]) {
     // add ships by modifying board
+    // Initialize the shipboard with 0s (empty)
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < WIDTH; j++) {
+            shipBoard[i][j] = 0;
+        }
+    }
 }
 
 // prints both boards to stdout
