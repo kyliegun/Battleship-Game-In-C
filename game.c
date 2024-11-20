@@ -1,4 +1,5 @@
 #include "game.h"
+#include <stdbool.h>
 
 /*
  * Parameter names listed here are (from perspective of the player):
