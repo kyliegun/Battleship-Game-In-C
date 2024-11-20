@@ -22,6 +22,12 @@
 // from our development plan, only has to work for a 10x10 to start
 void generateBoard(int shipBoard[][WIDTH]) {
     // add ships by modifying board
+    // Initialize the shipboard with 0s (empty)
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < WIDTH; j++) {
+            shipBoard[i][j] = 0;
+        }
+    }
 }
 
 // prints both boards to stdout
@@ -43,7 +49,15 @@ int shoot(int x, int y, int targetBoard[][WIDTH], int shotBoard[][WIDTH]) {
  * Returns true if sunk, else false
 */
 bool isSunk(int id, int targetBoard[][WIDTH], int shotBoard[][WIDTH]) {
-    return false;
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < WIDTH; j++) {
+            if (targetBoard[i][j] > 0 && shotBoard[i][j] != 1) {
+                return false; // Ship part is not hit yet
+            }
+        }
+    }
+    return true; // All parts of the ship have been hit
+
 }
 
 /*
