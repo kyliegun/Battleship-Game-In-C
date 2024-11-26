@@ -38,7 +38,7 @@ void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH]) {
     setlocale(LC_ALL, "");
     // print board contents to stdout
     printf(
-        "   1 2 3 4 5 6 7 8 9 10  |    1 2 3 4 5 6 7 8 9 10\n"
+        "   1 2 3 4 5 6 7 8 9 10  |    1 2 3 4 5 6 7 8 9 10 \n"
         "  _____________________  |    _____________________\n");
 
     wchar_t boardchar;
