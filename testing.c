@@ -2,8 +2,12 @@
 #include "opponentAI.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <wchar.h>
 
 int main(int argc, char *argv[]) {
+    wchar_t *s = L"▲v▲";
+    printf("%ls\n", s);
+
     int shipBoard[HEIGHT][WIDTH] = {
         {1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 2, 0},
@@ -30,4 +34,5 @@ int main(int argc, char *argv[]) {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
+    drawBoard(shipBoard, shotBoard);
 }

@@ -1,5 +1,8 @@
 #include "game.h"
 #include <stdbool.h>
+#include <wchar.h>
+#include <locale.h>
+#include <stdio.h>
 
 /*
  * Parameter names listed here are (from perspective of the player):
@@ -32,7 +35,41 @@ void generateBoard(int shipBoard[][WIDTH]) {
 
 // prints both boards to stdout
 void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH]) {
+    setlocale(LC_ALL, "");
     // print board contents to stdout
+    printf(
+        "   1 2 3 4 5 6 7 8 9 10  |    1 2 3 4 5 6 7 8 9 10 \n"
+        "  _____________________  |    _____________________\n");
+
+    wchar_t boardchar;
+    for (int i = 0; i < HEIGHT; i++) {
+        printf("%c| ", 'A'+i);
+        for (int j = 0; j < WIDTH; j++) {
+            boardchar = shipBoard[i][j] ? L'■' : L'◌'; 
+            printf("%lc ", boardchar);
+        }
+
+
+        printf("| |  %c| ", 'A'+i);
+        for (int j = 0; j < WIDTH; j++) {
+            switch (shotBoard[i][j]) {
+                case 1:
+                    boardchar = L'X';
+                    break;
+                case -1:
+                    boardchar = L'O';
+                    break;
+                default:
+                    boardchar = L'◌';
+            };
+
+            printf("%lc ", boardchar);
+        }
+        printf("|\n");
+    }
+
+    printf("  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾  |    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾ \n");
+        
 }
 
 /*
