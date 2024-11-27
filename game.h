@@ -9,13 +9,13 @@
 #define NUM_SHIPS 3  //Number of ships (simplified)
 
 typedef struct {
-    int x;  //x position of the ship
-    int y;  //y position of the ship
-} Ship;
+    int col;  //x position of the ship
+    int row;  //y position of the ship
+} Coord;
 
 //Function Declarations: 
 //Generates the shipboard by placing ships on it
-void generateBoard(int shipBoard[][WIDTH], Ship ships[]);
+void generateBoard(int shipBoard[][WIDTH], Coord ships[]);
 
 //Draws both the shipBoard and shotBoard to the screen
 void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH]); //, int opponentBoard[][WIDTH], int opponentShots[][WIDTH]); add later
@@ -25,9 +25,9 @@ void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH]); //, int opponent
 int shoot(int x, int y, int targetBoard[][WIDTH], int shotBoard[][WIDTH]);
 
 //Checks if a specific ship with ID 'id' is sunk based on shots fired and the ship's position
-bool isSunk(int id, Ship ships[], int shotBoard[][WIDTH]);
+bool isSunk(int id, Coord ships[], int shotBoard[][WIDTH]);
 
 //Counts how many ships are left, based on shipBoard and shots taken
-int countShipsLeft(Ship ships[], int shotBoard[][WIDTH]);
+int countShipsLeft(Coord ships[], int shotBoard[][WIDTH]);
 
 #endif //GAME_H
