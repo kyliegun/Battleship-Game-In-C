@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "opponentAI.h"
 #include "game.h"
 
-struct pos{
-    int x;
-    int y;
-};
-typedef struct pos Pos;
+// struct pos{
+//     int x;
+//     int y;
+// };
+// typedef struct pos Pos;
 
 Pos *freeSpace(int shotBoard[][WIDTH], int *size) {
     Pos *coords = malloc(sizeof(struct pos) * HEIGHT*WIDTH);
@@ -27,8 +28,9 @@ Pos *freeSpace(int shotBoard[][WIDTH], int *size) {
     return coords;
 }
 
-void easyMode(int *x, int *y, int shotBoard[][WIDTH]) {
+Pos easyMode(int shotBoard[][WIDTH]) {
     int size;
+    Pos target;
     Pos *coordArray = freeSpace(shotBoard, &size);
 
     if (coordArray == NULL) {
@@ -36,18 +38,19 @@ void easyMode(int *x, int *y, int shotBoard[][WIDTH]) {
         return;
     }
 
-    int randNum = (int)(rand() * size);
-    *x = (*(coordArray + randNum)).x;
-    *y = (*(coordArray + randNum)).y;
+    int randNum = rand() % (size + 1);
+    target = *(coordArray + randNum);
     free(coordArray);
+    return target;
 }
 
 void opponentShoot(int *x, int *y, int difficulty, int shotBoard[][WIDTH]) {
-    x = NULL;
-    y = NULL;
+    Pos target;
     switch (difficulty) {
         case 1:
-            easyMode(x, y, shotBoard);
+            target = easyMode(shotBoard);
+            *x = target.x;
+            *y = target.y;
             break;
         default:
             printf("Not a valid difficulty. No shot decided");
