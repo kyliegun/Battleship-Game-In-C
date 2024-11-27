@@ -1,0 +1,53 @@
+https://github.com/Sam-Scott-McMaster/the-team-assignment-team-19
+
+Name: Lukas Buehlmann
+Student #: 400527570
+GitHub ID: LukasBuehlmann
+
+Name: Connor McEachern
+Student #: 500527622
+GitHub ID: ConnorMcEachern
+
+Name: Kylie Gun
+Student #: 400524717
+GitHub ID: kyliegun
+
+Name: Alexis Quilatan
+Student #: 400507554
+GitHub ID: yalexisq
+
+Name: Xu(Shawn) Lin
+Student #: 400116428
+GitHub ID: XuShawnLin
+
+Updated Development Plan - November 27, 2024
+
+Title - Sinking Ships 
+
+Increment 1 - November 27, 2024
+The game board of the player showing their ships prints. The player can see the empty board of the opponent and start hitting.
+They can enter two coordinates at a time and take two shots at a time.Program can be run from terminal with the computer opponent with flags. 
+There is a proper --help option  and documentation. A workflow and test cases are set up for a CI pipeline. There is one computer difficulty 
+to play against. There is one level of dificulty for the oponent. Ships are placed randomly.
+
+Work completed.
+
+Increment 2 - Target date December 2, 2024
+Program can be run from terminal for two players. Players should be able to place their own ships.
+Program should now have different levels of dificulty.
+
+  Lukas: create the new opponent difficulties
+  Connor: add more test cases for the new possible constraints and situations
+  Kylie: add more flag option handling and ability to play aginst another player
+  Alexis: add ability for game to work with a variable sized board
+
+
+Increment 3 - Target date Dec. 4, 2024:
+  Program has statistics and achievements tracked throughout game. Abilities or powerups are added to give players more 
+  creative options. Uses sockets to allow play against someone else on the same network (probably won't get this working
+  in time). 
+
+  Lukas: working on LAN play
+  Connor: helping to set up sockets and more test cases
+  Kylie: manage statistics and achievements
+  Alexis: add abilities functions to game logic
