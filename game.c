@@ -1,8 +1,8 @@
 #include "game.h"
-#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <wchar.h>
 #include <locale.h>
-#include <stdio.h>
 
 /*
  * Parameter names listed here are (from perspective of the player):
@@ -23,53 +23,58 @@
 
 //generates the ships on a board of dimensions HEIGHT X WIDTH (maybe define number of ships too)
 // from our development plan, only has to work for a 10x10 to start
-void generateBoard(int shipBoard[][WIDTH]) {
+void generateBoard(int shipBoard[][WIDTH], Ship ships[]) {
     // add ships by modifying board
     // Initialize the shipboard with 0s (empty)
-    for (int i = 0; i < HEIGHT; i++) {
-        for (int j = 0; j < WIDTH; j++) {
-            shipBoard[i][j] = 0;
-        }
+    for (int i = 0; i < NUM_SHIPS; i++) {
+        int x = rand() % WIDTH;
+        int y = rand() % HEIGHT;
+        shipBoard[y][x] = 1;  //Mark ship on the board
+
+        //Store ship position for checking sunk status later
+        ships[i].x = x;
+        ships[i].y = y;
     }
 }
 
 // prints both boards to stdout
-void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH]) {
+void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], int opponentBoard[][WIDTH], int opponentShots[][WIDTH]) {
     setlocale(LC_ALL, "");
-    // print board contents to stdout
-    printf(
-        "   1 2 3 4 5 6 7 8 9 10  |    1 2 3 4 5 6 7 8 9 10 \n"
-        "  _____________________  |    _____________________\n");
 
-    wchar_t boardchar;
+    //Print column headers for both boards
+    printf("   1 2 3 4 5 6 7 8 9 10  |    1 2 3 4 5 6 7 8 9 10 \n");
+    printf("  _____________________  |    _____________________\n");
+
+    wchar_t boardChar;
     for (int i = 0; i < HEIGHT; i++) {
-        printf("%c| ", 'A'+i);
+        //Print row labels and your shipboard (left)
+        printf("%c| ", 'A' + i);
         for (int j = 0; j < WIDTH; j++) {
-            boardchar = shipBoard[i][j] ? L'■' : L'◌'; 
-            printf("%lc ", boardchar);
+            boardChar = shipBoard[i][j] ? L'■' : L'◌';  //Ship or empty
+            printf("%lc ", boardChar);
         }
 
-
-        printf("| |  %c| ", 'A'+i);
+        printf("| |  ");  //Spacer between the boards
+        //Print row labels and the opponent's shotboard (right)
+        printf("%c| ", 'A' + i);
         for (int j = 0; j < WIDTH; j++) {
-            switch (shotBoard[i][j]) {
+            switch (opponentShots[i][j]) {
                 case 1:
-                    boardchar = L'X';
+                    boardChar = L'X'; //Hit
                     break;
                 case -1:
-                    boardchar = L'O';
+                    boardChar = L'O'; //Miss
                     break;
                 default:
-                    boardchar = L'◌';
-            };
-
-            printf("%lc ", boardchar);
+                    boardChar = L'◌'; //Empty (unshot)
+            }
+            printf("%lc ", boardChar);
         }
         printf("|\n");
     }
 
+    //Print bottom separator line
     printf("  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾  |    ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾ \n");
-        
 }
 
 /*
@@ -78,6 +83,11 @@ void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH]) {
  * Returns a 0 for miss, 1 for hit, or 2 for hit and sunk (uses isSunk for this check)
 */
 int shoot(int x, int y, int targetBoard[][WIDTH], int shotBoard[][WIDTH]) {
+    if (targetBoard[y][x] != 0) {
+        shotBoard[y][x] = 1;  //Hit
+        return 1;  
+    }
+    shotBoard[y][x] = -1;  //Miss
     return 0;
 }
 
@@ -85,16 +95,9 @@ int shoot(int x, int y, int targetBoard[][WIDTH], int shotBoard[][WIDTH]) {
  * Checks if the ship with the given id is sunk or not by comparing the target to current hits
  * Returns true if sunk, else false
 */
-bool isSunk(int id, int targetBoard[][WIDTH], int shotBoard[][WIDTH]) {
-    for (int i = 0; i < HEIGHT; i++) {
-        for (int j = 0; j < WIDTH; j++) {
-            if (targetBoard[i][j] > 0 && shotBoard[i][j] != 1) {
-                return false; // Ship part is not hit yet
-            }
-        }
-    }
-    return true; // All parts of the ship have been hit
-
+bool isSunk(int id, Ship ships[], int shotBoard[][WIDTH]) {
+    //Check if the shot at the ship's position has been hit
+    return shotBoard[ships[id].y][ships[id].x] == 1;
 }
 
 /*
@@ -102,6 +105,12 @@ bool isSunk(int id, int targetBoard[][WIDTH], int shotBoard[][WIDTH]) {
  * Can be used to check for a win or as output after a ship is sunk
  * Returns the number of ships remaining
 */
-int countShipsLeft(int shipBoard[][WIDTH], int opponentShots[][WIDTH]) {
-    return 0;
+int countShipsLeft(Ship ships[], int shotBoard[][WIDTH]) {
+    int shipsLeft = 0;
+    for (int i = 0; i < NUM_SHIPS; i++) {
+        if (shotBoard[ships[i].y][ships[i].x] != 1) {
+            shipsLeft++;
+        }
+    }
+    return shipsLeft;
 }
