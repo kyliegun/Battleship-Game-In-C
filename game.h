@@ -13,7 +13,7 @@ typedef struct {
     int y;  //y position of the ship
 } Ship;
 
-//Function Declarations:
+//Function Declarations: 
 //Generates the shipboard by placing ships on it
 void generateBoard(int shipBoard[][WIDTH], Ship ships[]);
 
