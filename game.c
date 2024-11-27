@@ -38,19 +38,19 @@ void generateBoard(int shipBoard[][WIDTH], Ship ships[]) {
 }
 
 // prints both boards to stdout
-void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], int opponentBoard[][WIDTH], int opponentShots[][WIDTH]) {
+void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH]) { //, int opponentBoard[][WIDTH], int opponentShots[][WIDTH]) { add later
     setlocale(LC_ALL, "");
 
     //Print column headers for both boards
-    printf("   1 2 3 4 5 6 7 8 9 10  |    1 2 3 4 5 6 7 8 9 10 \n");
-    printf("  _____________________  |    _____________________\n");
+    printf("   1 2 3 4 5 6 7 8 9 10  |     1 2 3 4 5 6 7 8 9 10 \n");
+    printf("  _____________________  |    _____________________ \n");
 
     wchar_t boardChar;
     for (int i = 0; i < HEIGHT; i++) {
         //Print row labels and your shipboard (left)
         printf("%c| ", 'A' + i);
         for (int j = 0; j < WIDTH; j++) {
-            boardChar = shipBoard[i][j] ? L'■' : L'◌';  //Ship or empty
+            boardChar = shipBoard[i][j] ? L'▲' : L'◌';  //Ship or empty
             printf("%lc ", boardChar);
         }
 
@@ -58,7 +58,7 @@ void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], int opponentBoard
         //Print row labels and the opponent's shotboard (right)
         printf("%c| ", 'A' + i);
         for (int j = 0; j < WIDTH; j++) {
-            switch (opponentShots[i][j]) {
+            switch (shotBoard[i][j]) {
                 case 1:
                     boardChar = L'X'; //Hit
                     break;
