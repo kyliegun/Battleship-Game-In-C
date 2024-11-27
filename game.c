@@ -23,14 +23,9 @@
 
 //generates the ships on a board of dimensions HEIGHT X WIDTH (maybe define number of ships too)
 // from our development plan, only has to work for a 10x10 to start
-void generateBoard(int shipBoard[][WIDTH], Coord ships[]) {
+void generateBoard(int shipBoard[][WIDTH], Ship ships[]) {
     // add ships by modifying board
-    // Initialize the shipboard with 0s (empty)
-    for (int i = 0; i < HEIGHT; i++) {
-        for (int j = 0; j < WIDTH; j++) {
-            shipBoard[i][j] = 0;
-        }
-    }
+
     // prompt the player to create ship of N length
     // get input
     // parse input A3 to [0][2]
@@ -39,31 +34,46 @@ void generateBoard(int shipBoard[][WIDTH], Coord ships[]) {
     char row;
     int col;
 
-    printf("Enter the ship coordinate in the form of 'A1': ");
-    scanf("%c%d", &row, &col);
+    for (int id = 1; id <= NUM_SHIPS; id++) {
+        Ship *ship = (ships+id-1);
+        
 
-    if (row >= 'A' && row <= 'Z'){
-        row -= 'A';
+        printf("Enter the ship coordinate in the form of 'A1': ");
+        scanf("%c%d", &row, &col);
+
+        if (row >= 'A' && row <= 'Z'){
+            row -= 'A';
+        }
+
+        ship->shipID = id;
+        ship->headpos.x = col;
+        ship->headpos.y = row;
+        ship->length = shipsizes[id-1];
+        // ship->isVertical = add this
+
+        addShip(shipBoard, *ship);
     }
+
 
 }
 
 // Helper funciton to add ships to the board based on the user input coordinates.
-void addShip(int shipboard[HEIGHT][WIDTH], int size, int shipID, Coord startpos, bool isVertical){
-    for (int i = 0; i < size; i++) {
-        if (isVertical) {
-            shipboard[startpos.row + 1][startpos.col] = shipID;
+void addShip(int shipboard[HEIGHT][WIDTH], Ship ship){
+    for (int i = 0; i < ship.length; i++) {
+        if (ship.isVertical) {
+            shipboard[ship.headpos.y + 1][ship.headpos.x] = ship.shipID;
         } else {
-            shipboard[startpos.row][startpos.col + 1] = shipID;
+            shipboard[ship.headpos.y][ship.headpos.x + 1] = ship.shipID;
         }
     }
 }
 
 // prints both boards to stdout
-void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH]) { //, int opponentBoard[][WIDTH], int opponentShots[][WIDTH]) { add later
+void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], int opponentBoard[][WIDTH], int opponentShots[][WIDTH]) {
     setlocale(LC_ALL, "");
 
     //Print column headers for both boards
+    printf("   Ship Board:                 Shot Board:          \n");
     printf("   1 2 3 4 5 6 7 8 9 10  |     1 2 3 4 5 6 7 8 9 10 \n");
     printf("  _____________________  |    _____________________ \n");
 
@@ -72,7 +82,13 @@ void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH]) { //, int opponen
         //Print row labels and your shipboard (left)
         printf("%c| ", 'A' + i);
         for (int j = 0; j < WIDTH; j++) {
-            boardChar = shipBoard[i][j] ? L'▲' : L'◌';  //Coord or empty
+            if (shipBoard[i][j]) {
+                if (opponentShots[i][j])    boardChar = L'□';
+                else                        boardChar = L'■';
+            } else {
+                if (opponentShots[i][j])    boardChar = L'X';
+                else                        boardChar = L'◌';
+            }
             printf("%lc ", boardChar);
         }
 
@@ -117,9 +133,17 @@ int shoot(int col, int row, int targetBoard[][WIDTH], int shotBoard[][WIDTH]) {
  * Checks if the ship with the given id is sunk or not by comparing the target to current hits
  * Returns true if sunk, else false
 */
-bool isSunk(int id, Coord ships[], int shotBoard[][WIDTH]) {
+bool isSunk(Ship ship, int shotBoard[][WIDTH]) {
+    int vertical   = ship.isVertical;
+    int horizontal = !ship.isVertical;
     //Check if the shot at the ship's position has been hit
-    return shotBoard[ships[id].row][ships[id].col] == 1;
+    for (int i = 0; i < ship.length; i++) {
+        if (shotBoard[ship.headpos.y + i*vertical][ship.headpos.x + i*horizontal] == 0) {
+            return false; //if any of the pieces are missed then the ship is not sunk
+        }
+    }
+
+    return true;
 }
 
 /*
@@ -127,11 +151,11 @@ bool isSunk(int id, Coord ships[], int shotBoard[][WIDTH]) {
  * Can be used to check for a win or as output after a ship is sunk
  * Returns the number of ships remaining
 */
-int countShipsLeft(Coord ships[], int shotBoard[][WIDTH]) {
-    int shipsLeft = 0;
-    for (int i = 0; i < NUM_SHIPS; i++) {
-        if (shotBoard[ships[i].row][ships[i].col] != 1) {
-            shipsLeft++;
+int countShipsLeft(Ship ships[], int shotBoard[][WIDTH]) {
+    int shipsLeft = NUM_SHIPS;
+    for (int i = 1; i <= NUM_SHIPS; i++) {
+        if (isSunk(ships[i], shotBoard)) {
+            shipsLeft --;
         }
     }
     return shipsLeft;
