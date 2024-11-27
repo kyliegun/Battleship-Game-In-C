@@ -62,6 +62,29 @@ Pos easyMode(int shotBoard[][WIDTH]) {
 }
 
 /**
+ * @brief The medium opponent difficulty. Shoots randomly but can track hit ships
+ * 
+ * @param shotBoard - the 2D array of current opponent shots
+ * @return Pos - The position to shoot at
+ */
+Pos mediumMode(int shotBoard[][WIDTH]) {
+    int size;
+    Pos target;
+    Pos *coordArray = freeSpace(shotBoard, &size);
+
+    if (coordArray == NULL) {
+        printf("No available shots. Something has gone wrong");
+        return;
+    }
+
+    // chooses a random position within the available spaces
+    int randNum = rand() % (size + 1);
+    target = *(coordArray + randNum);
+    free(coordArray);
+    return target;
+}
+
+/**
  * @brief The function to manage opponent shooting
  * 
  * @param x - the intended x position to shoot at
