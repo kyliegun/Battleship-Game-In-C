@@ -8,9 +8,16 @@
 #define HEIGHT 10
 #define NUM_SHIPS 3  //Number of ships (simplified)
 
+typedef struct pos{
+    int x; //x position
+    int y; //y position
+} Pos;
+
 typedef struct {
-    int x;  //x position of the ship
-    int y;  //y position of the ship
+    int shipID;      //the ID of the ship
+    Pos headpos;     //the top-left coordinate of the ship
+    int length;      //length of the ship
+    bool isVertical; //if the ship is vertical or horizontal
 } Ship;
 
 //Function Declarations: 
