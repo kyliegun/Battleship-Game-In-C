@@ -21,11 +21,12 @@ void displayHelp() {
 
 
 int main() {
-	int shipBoard[HEIGHT][WIDTH];
+	int shipBoard[HEIGHT][WIDTH] = {0};
 	int shotBoard[HEIGHT][WIDTH] = {0};
+	Ship ships[NUM_SHIPS];
 
 	// generating the ship boards randomly placed
-	generateBoard(shipBoard);
+	generateBoard(shipBoard, ships);
 
 	int x, y;
 	int result;
@@ -41,7 +42,7 @@ int main() {
 		printf("Enter your shot (e.g., A1, B2): ");
 		char rowChar;
 		int col;
-		scanf("%c %d, &rowChar, &col"); // reads input row and column
+		scanf("%c %d" , &rowChar, &col); // reads input row and column
 
 		// convert the row from letter to index
 		int row = rowChar - 'A';
@@ -63,7 +64,7 @@ int main() {
 		}
 
 		// checking if all ships are sunk
-		if(countShipsLeft(shipBoard, shotBoard) == 0){
+		if(countShipsLeft(ships, shotBoard) == 0){
 			printf("Congratulations! You have sunk all ships.\n");
 			break;
 		}

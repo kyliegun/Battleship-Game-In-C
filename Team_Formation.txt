@@ -16,6 +16,10 @@ Name: Alexis Quilatan
 Student #: 400507554
 GitHub ID: yalexisq
 
+Name: Xu(Shawn) Lin
+Student #: 400116428
+GitHub ID: XuShawnLin
+
 We're going to make a C app for a battleship like game where you can play against another player or a CPU.
 The program will run in the terminal and use ASCII art to display the game state after each turn. 
 The player can enter a valid coordinate to fire and the program will check to see if it hits or misses the opponent.
@@ -26,4 +30,5 @@ The functionalities and responsibilities are:
 Testing/CI pipeline - Connor
 Main - Kylie
 Game logic - Alexis
-Opponent AI - Lukas 
+Opponent AI - Lukas
+PLayer ship placement choices and printing to terminal - Shawn

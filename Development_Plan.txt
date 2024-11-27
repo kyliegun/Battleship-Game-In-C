@@ -16,6 +16,10 @@ Name: Alexis Quilatan
 Student #: 400507554
 GitHub ID: yalexisq
 
+Name: Xu(Shawn) Lin
+Student #: 400116428
+GitHub ID: XuShawnLin
+
 Title of Project: 
 
 High Level Description: Be as detailed as you can for each of the following:
@@ -48,8 +52,7 @@ date with development so teammates can test their code as they develop.
 
 Kylie:
 For this team project, I am responsible for the main function. I will be initializing key game elements such as the game boards, 
-setting up initial ship placements, and establishing a foundational game structure. Each player will start with an empty board, and 
-then proceed to handle the ship placements. I will also be coordinating with other team members, specifically game logic, to successfully 
+setting up initial ship placements, and establishing a foundational game structure. I will also be coordinating with other team members, specifically game logic, to successfully 
 incorporate functions that are in the game logic program. The program will first call on functions from game logic to initialize the 
 empty board. To place the ships, the main program will use functions from the game logic to assign the ships their locations. 
 The main function will then go into a loop where players alternately attack each other's boards after ships have been configured. 
@@ -61,6 +64,9 @@ Alexis: For our Battleship game, the functionality I'm in charge of is the game 
 The game logic includes setting up the game structure, handling the user’s choices, managing player turns, and determining ship placements. 
 This includes implementing functions for initializing the game board, validating player moves, and ensuring that ship positions follow game rules. 
 Additionally, I'll manage game states, such as tracking hits, misses, and win conditions.
+
+Shawn: I will be responsible to developing the player ship placement logic ensuring they place the ships within the board with no overlays.
+I will also be responsible for printing the boards to the terminal screen.
 
 
 The Increments (at least 1): What functionality from each team member will be in each 
@@ -74,6 +80,7 @@ Increment 1 - Target date Nov. 20, 2024:
   Connor: make workflow, tests, and README.md
   Kylie: make a main function that calls game logic functions and handles flags
   Alexis: create the game logic and functions
+  Shawn: ensure the printing function works to display the board and ships in the terminal
 
 Increment 2 - Target date Nov. 27, 2024:
   Program now has options for multiple levels of computer difficulty. There is also an option to play against another
@@ -84,6 +91,7 @@ Increment 2 - Target date Nov. 27, 2024:
   Connor: add more test cases for the new possible constraints and situations
   Kylie: add more flag option handling and ability to play aginst another player
   Alexis: add ability for game to work with a variable sized board
+  Shawn: add player ship placemnt choices option
 
 Increment 3 - Target date Dec. 4, 2024:
   Program has statistics and achievements tracked throughout game. Abilities or powerups are added to give players more 
@@ -94,6 +102,8 @@ Increment 3 - Target date Dec. 4, 2024:
   Connor: helping to set up sockets and more test cases
   Kylie: manage statistics and achievements
   Alexis: add abilities functions to game logic
+  Shawn: add player ship placement check conditions to ensure the ships are placed within the board with no overlays.
+        add privacy in the the print fucntion ensure the players can only see their own boards.
 
 
 
