@@ -16,6 +16,10 @@ Name: Alexis Quilatan
 Student #: 400507554
 GitHub ID: yalexisq
 
+Name: Xu(Shawn) Lin
+Student #: 400116428
+GitHub ID: XuShawnLin
+
 Title of Project: 
 
 High Level Description: Be as detailed as you can for each of the following:
@@ -28,7 +32,8 @@ by arranging ships on a grid and taking turns to locate and sink the opponent’
 select coordinates, and track performance statistics, including what they hit or miss, and achievements at the end. A constraint for 
 this game would include not being able to place more than one ship on the same coordinates. The ships cannot overlap. Additionally, 
 the grid game board has constraints as well, and will need to ensure that ships are placed within grid boundaries. As for gameplay 
-constraints, the player can only go once before the next player’s turn.
+constraints, the player can only go once before the next player’s turn. There is also a gameplay constraint of only being allowed to 
+shoot within the size of the board. 
 
 
 Each team member describing their role and what they will deliver:
@@ -38,7 +43,7 @@ I will be creating the computer opponent that the user can play against. It will
 be specified by a flag when running the initial command. Each level of difficulty will use a better strategy than the last 
 which leaves room for increments in development. An example would be that the easiest difficulty is completely random and 
 the hardest difficulty chooses the optimal move each turn. Methods will be controlled by main and will simulate the same 
-actions as a player would. 
+actions as a player would.
 
 Connor:
 I will be in charge of testing and CI pipeline integration. I will set up test cases and ensure that new developments follow the design specs.
@@ -47,8 +52,7 @@ date with development so teammates can test their code as they develop.
 
 Kylie:
 For this team project, I am responsible for the main function. I will be initializing key game elements such as the game boards, 
-setting up initial ship placements, and establishing a foundational game structure. Each player will start with an empty board, and 
-then proceed to handle the ship placements. I will also be coordinating with other team members, specifically game logic, to successfully 
+setting up initial ship placements, and establishing a foundational game structure. I will also be coordinating with other team members, specifically game logic, to successfully 
 incorporate functions that are in the game logic program. The program will first call on functions from game logic to initialize the 
 empty board. To place the ships, the main program will use functions from the game logic to assign the ships their locations. 
 The main function will then go into a loop where players alternately attack each other's boards after ships have been configured. 
@@ -61,9 +65,50 @@ The game logic includes setting up the game structure, handling the user’s cho
 This includes implementing functions for initializing the game board, validating player moves, and ensuring that ship positions follow game rules. 
 Additionally, I'll manage game states, such as tracking hits, misses, and win conditions.
 
-
+Shawn: I will be responsible to developing the player ship placement logic ensuring they place the ships within the board with no overlays.
+I will also be responsible for printing the boards to the terminal screen.
 
 
 The Increments (at least 1): What functionality from each team member will be in each 
 increment, what is your target date for each increment?
 
+Increment 1 - Target date Nov. 20, 2024:
+  Program can be run from terminal with flags for playing against computer. There is a proper --help option
+  and documentation. A workflow and test cases are set up for a CI pipeline. There is one computer difficulty to play against.
+  
+  Lukas: make opponent AI
+  Connor: make workflow, tests, and README.md
+  Kylie: make a main function that calls game logic functions and handles flags
+  Alexis: create the game logic and functions
+  Shawn: ensure the printing function works to display the board and ships in the terminal
+
+Increment 2 - Target date Nov. 27, 2024:
+  Program now has options for multiple levels of computer difficulty. There is also an option to play against another
+  player on the same command line which is decided by a flag on program startup. Program can also be set to play on an 
+  N x M board size with a proportional amount of total ships. This is also specified as an optional flag.
+  
+  Lukas: create the new opponent difficulties
+  Connor: add more test cases for the new possible constraints and situations
+  Kylie: add more flag option handling and ability to play aginst another player
+  Alexis: add ability for game to work with a variable sized board
+  Shawn: add player ship placemnt choices option
+
+Increment 3 - Target date Dec. 4, 2024:
+  Program has statistics and achievements tracked throughout game. Abilities or powerups are added to give players more 
+  creative options. Uses sockets to allow play against someone else on the same network (probably won't get this working
+  in time). 
+
+  Lukas: working on LAN play
+  Connor: helping to set up sockets and more test cases
+  Kylie: manage statistics and achievements
+  Alexis: add abilities functions to game logic
+  Shawn: add player ship placement check conditions to ensure the ships are placed within the board with no overlays.
+        add privacy in the the print fucntion ensure the players can only see their own boards.
+
+
+
+Game logic structure: November 15, 2024
+Game logic code: November 19, 2024
+Main code: November 19, 2024
+Opponent AI: TBD
+Testing: TBD
