@@ -20,7 +20,7 @@
  * @return Pos* - an array of positions
  */
 Pos *freeSpace(int shotBoard[][WIDTH], int *size) {
-    Pos *coords = malloc(sizeof(struct pos) * HEIGHT*WIDTH);
+    Pos *coords = malloc(sizeof(Pos) * HEIGHT*WIDTH);
     int n = 0;
 
     for (int i=0;i < HEIGHT;i++) {
@@ -33,7 +33,7 @@ Pos *freeSpace(int shotBoard[][WIDTH], int *size) {
         }
     }
 
-    coords = realloc(coords, sizeof(struct pos) * n);
+    coords = realloc(coords, sizeof(Pos) * n);
     *size = n;
     return coords;
 }
