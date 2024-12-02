@@ -23,53 +23,69 @@
 
 //generates the ships on a board of dimensions HEIGHT X WIDTH (maybe define number of ships too)
 // from our development plan, only has to work for a 10x10 to start
-void generateBoard(int shipBoard[][WIDTH], Ship ships[]) {
+void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
     // add ships by modifying board
-
     // prompt the player to create ship of N length
     // get input
-    // parse input A3 to [0][2]
     // either add ship at index or tell invalid spot
-    int shipsizes[] = {2, 2, 2, 3, 4, 5, 6};
-    char row;
-    int col;
+    // Initialize the shipboard with 0s (empty)
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < WIDTH; j++) {
+            shipBoard[i][j] = 0;
+        }
+    }
 
     for (int id = 1; id <= NUM_SHIPS; id++) {
-        Ship *ship = (ships+id-1);
         
-
+        Ship *ship = &ships[id];
+        char row;
+        int col;
+        char verticality;
+        
         printf("Enter the ship coordinate in the form of 'A1': ");
         scanf("%c%d", &row, &col);
+        // Convert coordinate to intergers
 
-        if (row >= 'A' && row <= 'Z'){
-            row -= 'A';
+        row -= 'A';
+        col -= 1;
+
+
+        printf("Do you want the ship to be verital or horizontal? (V/H): ");
+        scanf("%c", &verticality);
+        
+        if (verticality == 'V') {
+            ship->isVertical = true;
+        } else if (verticality == 'H') {
+            ship->isVertical = false;
+        } else {
+            ;
         }
-
+        
         ship->shipID = id;
         ship->headpos.x = col;
         ship->headpos.y = row;
-        ship->length = shipsizes[id-1];
-        // ship->isVertical = add this
+        ship->length = 3;
 
         addShip(shipBoard, *ship);
     }
-
-
 }
 
 // Helper funciton to add ships to the board based on the user input coordinates.
-void addShip(int shipboard[HEIGHT][WIDTH], Ship ship){
+void addShip(int shipBoard[HEIGHT][WIDTH], Ship ship){
     for (int i = 0; i < ship.length; i++) {
         if (ship.isVertical) {
-            shipboard[ship.headpos.y + 1][ship.headpos.x] = ship.shipID;
+            shipBoard[ship.headpos.y + i][ship.headpos.x] = ship.shipID;
         } else {
-            shipboard[ship.headpos.y][ship.headpos.x + 1] = ship.shipID;
+            shipBoard[ship.headpos.y][ship.headpos.x + i] = ship.shipID;
         }
     }
 }
 
-// prints both boards to stdout
-void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], int opponentBoard[][WIDTH], int opponentShots[][WIDTH]) {
+/*
+ * Draws the shipBoard and shotBoard to stdout.
+ * Uses Unicode characters to create the ships.
+*/
+void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], Ship ships[], int opponentBoard[][WIDTH], int opponentShots[][WIDTH]) {
     setlocale(LC_ALL, "");
 
     //Print column headers for both boards
@@ -82,12 +98,28 @@ void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], int opponentBoard
         //Print row labels and your shipboard (left)
         printf("%c| ", 'A' + i);
         for (int j = 0; j < WIDTH; j++) {
-            if (shipBoard[i][j]) {
-                if (opponentShots[i][j])    boardChar = L'□';
-                else                        boardChar = L'■';
+            int shipID;
+            if (shipID = shipBoard[i][j]) { //Test if there is a ship and save the shipID
+                Ship ship = ships[shipID-1];
+                Pos tailpos; //Find the tail position of the ship
+                tailpos.x = ship.headpos.x + ship.length * !ship.isVertical;
+                tailpos.y = ship.headpos.y + ship.length * ship.isVertical;
+
+
+                if (ship.headpos.x == i && ship.headpos.y == j) {
+                    if (opponentShots[i][j])    boardChar = ship.isVertical ? L'△' : L'◁'; //Front has been hit
+                    else                        boardChar = ship.isVertical ? L'▲' : L'◀'; //Front has not been hit
+                } else if (tailpos.x == i && tailpos.y == j) {
+                    if (opponentShots[i][j])    boardChar = ship.isVertical ? L'▽' : L'▷'; //Back has been hit
+                    else                        boardChar = ship.isVertical ? L'▼' : L'▶'; //Back has not been hit
+                } else {
+                    if (opponentShots[i][j])    boardChar = L'□'; //Ship has been hit
+                    else                        boardChar = L'■'; //Ship has not been hit
+                }
+                
             } else {
-                if (opponentShots[i][j])    boardChar = L'X';
-                else                        boardChar = L'◌';
+                if (opponentShots[i][j])    boardChar = L'X'; //Miss shot
+                else                        boardChar = L'◌'; //Empty 
             }
             printf("%lc ", boardChar);
         }
