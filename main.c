@@ -4,6 +4,7 @@
 #include "game.h"
 #include "opponentAI.h"
 
+
 // function to display help message
 void displayHelp() {
     printf("Welcome to Sinking Ships!\n");
