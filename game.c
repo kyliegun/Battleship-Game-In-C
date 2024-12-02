@@ -28,31 +28,24 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
     // prompt the player to create ship of N length
     // get input
     // either add ship at index or tell invalid spot
-    // Initialize the shipboard with 0s (empty)
-    for (int i = 0; i < HEIGHT; i++) {
-        for (int j = 0; j < WIDTH; j++) {
-            shipBoard[i][j] = 0;
-        }
-    }
 
     for (int id = 1; id <= NUM_SHIPS; id++) {
         
-        Ship *ship = &ships[id];
+        Ship *ship = &ships[id-1];
         char row;
         int col;
         char verticality;
         
-        printf("Enter the ship coordinate in the form of 'A1': ");
-        scanf("%c%d", &row, &col);
+        printf("Enter the ship coordinate in the form of 'A1': \n");
+        scanf(" %c%d", &row, &col);
         // Convert coordinate to intergers
 
         row -= 'A';
         col -= 1;
 
+        printf("Do you want the ship to be vertical or horizontal? (V/H): \n");
+        scanf(" %c", &verticality);  
 
-        printf("Do you want the ship to be verital or horizontal? (V/H): ");
-        scanf("%c", &verticality);
-        
         if (verticality == 'V') {
             ship->isVertical = true;
         } else if (verticality == 'H') {
@@ -67,6 +60,7 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
         ship->length = 3;
 
         addShip(shipBoard, *ship);
+	    
     }
 }
 
@@ -102,14 +96,14 @@ void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], Ship ships[], int
             if (shipID = shipBoard[i][j]) { //Test if there is a ship and save the shipID
                 Ship ship = ships[shipID-1];
                 Pos tailpos; //Find the tail position of the ship
-                tailpos.x = ship.headpos.x + ship.length * !ship.isVertical;
-                tailpos.y = ship.headpos.y + ship.length * ship.isVertical;
+                
+                tailpos.x = ship.headpos.x + (ship.length-1) * !ship.isVertical;
+                tailpos.y = ship.headpos.y + (ship.length-1) * ship.isVertical;
 
-
-                if (ship.headpos.x == i && ship.headpos.y == j) {
+                if (ship.headpos.y == i && ship.headpos.x == j) {
                     if (opponentShots[i][j])    boardChar = ship.isVertical ? L'△' : L'◁'; //Front has been hit
                     else                        boardChar = ship.isVertical ? L'▲' : L'◀'; //Front has not been hit
-                } else if (tailpos.x == i && tailpos.y == j) {
+                } else if (tailpos.y == i && tailpos.x == j) {
                     if (opponentShots[i][j])    boardChar = ship.isVertical ? L'▽' : L'▷'; //Back has been hit
                     else                        boardChar = ship.isVertical ? L'▼' : L'▶'; //Back has not been hit
                 } else {
