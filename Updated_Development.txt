@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 Updated Development Plan - November 27, 2024
 
-=======
->>>>>>> 8e758a6ae22759bded27c7e780e04c5f34ff083a
 https://github.com/Sam-Scott-McMaster/the-team-assignment-team-19
 
 Name: Lukas Buehlmann
