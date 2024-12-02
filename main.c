@@ -4,6 +4,7 @@
 #include "game.h"
 #include "opponentAI.h"
 
+
 // function to display help message
 void displayHelp() {
     printf("Welcome to Sinking Ships!\n");
@@ -22,10 +23,47 @@ void displayHelp() {
 }
 
 
-int main() {
-	int shipBoard[HEIGHT][WIDTH] = {0};
+int main(int argc, char *argv[]) {
+	if (argc > 1){
+		for (int i = 1; i < argc; i++){
+			if (strcmp(argv[i], "--help") == 0){
+				displayHelp();
+				return 0;
+			}else if (strcmp(argv[i], "--play") == 0){
+				printf("Game is starting!");
+				break;
+			}else{
+				printf("Invalid argument: %s\n", argv[i]);
+				printf("Please use --help to view options.\n");
+				return 1;
+			}
+		}
+	}
+	int shipBoard[HEIGHT][WIDTH] = {
+        {1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0},
+        {0, 0, 3, 3, 6, 0, 0, 0, 2, 0},
+        {0, 0, 0, 0, 6, 0, 0, 0, 2, 0},
+        {0, 0, 0, 0, 4, 0, 0, 0, 2, 0},
+        {0, 8, 0, 0, 4, 0, 0, 0, 2, 0},
+        {0, 8, 0, 0, 4, 0, 0, 5, 0, 0},
+        {0, 8, 0, 0, 4, 0, 0, 5, 0, 0},
+        {0, 7, 7, 7, 7, 7, 7, 5, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    };
 	int shotBoard[HEIGHT][WIDTH] = {0};
-	int opponentShipBoard[HEIGHT][WIDTH] = {0};
+	int opponentShipBoard[HEIGHT][WIDTH] = {
+        {1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0},
+        {0, 0, 3, 3, 6, 0, 0, 0, 2, 0},
+        {0, 0, 0, 0, 6, 0, 0, 0, 2, 0},
+        {0, 0, 0, 0, 4, 0, 0, 0, 2, 0},
+        {0, 8, 0, 0, 4, 0, 0, 0, 2, 0},
+        {0, 8, 0, 0, 4, 0, 0, 5, 0, 0},
+        {0, 8, 0, 0, 4, 0, 0, 5, 0, 0},
+        {0, 7, 7, 7, 7, 7, 7, 5, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    };
 	int opponentShotBoard[HEIGHT][WIDTH] = {0};
 	Ship ships[NUM_SHIPS];
 	Ship opponentShips[NUM_SHIPS];
@@ -33,8 +71,8 @@ int main() {
 	int turn = 0;
 
 	// generating the ship boards randomly placed
-	generateBoard(shipBoard, ships);
-	generateBoard(opponentShipBoard, opponentShips);
+	// generateBoard(shipBoard, ships);
+	// generateBoard(opponentShipBoard, opponentShips);
 
 	int x, y;
 	int xTarget;
@@ -46,8 +84,7 @@ int main() {
 	while(1){
 		if (turn == 0) {
 			// drawing the boards
-			printf("Ship Board:\n");
-			drawBoard(shipBoard, shotBoard);
+			drawBoard(shipBoard, shotBoard, opponentShipBoard, opponentShotBoard);
 			printf("\n");
 
 			// asking the player for cooridnates
@@ -65,7 +102,7 @@ int main() {
 				continue;
 			}
 
-			result = shoot(col - 1, row, shipBoard, shotBoard);
+			result = shoot(col - 1, row, opponentShotBoard, shotBoard);
 
 			sleep(1);
 
