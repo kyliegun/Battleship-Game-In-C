@@ -23,7 +23,7 @@
 
 //generates the ships on a board of dimensions HEIGHT X WIDTH (maybe define number of ships too)
 // from our development plan, only has to work for a 10x10 to start
-void generateBoard(int shipBoard[][WIDTH], Coord ships[]) {
+void generateBoard(int shipBoard[HEIGHT][WIDTH], Coord ships[]) {
     // add ships by modifying board
     // Initialize the shipboard with 0s (empty)
     for (int i = 0; i < HEIGHT; i++) {
@@ -31,9 +31,12 @@ void generateBoard(int shipBoard[][WIDTH], Coord ships[]) {
             shipBoard[i][j] = 0;
         }
     }
+}
+
+// Helper funciton to add ships to the board based on the user input coordinates.
+void addShip(int shipboard[HEIGHT][WIDTH], int size, int shipID, Coord startpos, bool isVertical){
     // prompt the player to create ship of N length
     // get input
-    // parse input A3 to [0][2]
     // either add ship at index or tell invalid spot
     int shipsizes[] = {2, 2, 2, 3, 4, 5, 6};
     char row;
@@ -42,19 +45,21 @@ void generateBoard(int shipBoard[][WIDTH], Coord ships[]) {
     printf("Enter the ship coordinate in the form of 'A1': ");
     scanf("%c%d", &row, &col);
 
+    // Parsing the row letter into an integer
     if (row >= 'A' && row <= 'Z'){
         row -= 'A';
     }
+    col -= 1;
+    
+    // Placing the first part of the ship
+    shipboard[row][col] = shipID;
 
-}
-
-// Helper funciton to add ships to the board based on the user input coordinates.
-void addShip(int shipboard[HEIGHT][WIDTH], int size, int shipID, Coord startpos, bool isVertical){
-    for (int i = 0; i < size; i++) {
+    // Place the rest of the ship based on the size and direction
+    for (int i = 1; i <= size; i++) {
         if (isVertical) {
-            shipboard[startpos.row + 1][startpos.col] = shipID;
+            shipboard[startpos.row + i][startpos.col] = shipID;
         } else {
-            shipboard[startpos.row][startpos.col + 1] = shipID;
+            shipboard[startpos.row][startpos.col + i] = shipID;
         }
     }
 }
