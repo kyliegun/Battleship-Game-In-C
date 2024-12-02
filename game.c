@@ -68,8 +68,11 @@ void addShip(int shipboard[HEIGHT][WIDTH], Ship ship){
     }
 }
 
-// prints both boards to stdout
-void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], int opponentBoard[][WIDTH], int opponentShots[][WIDTH]) {
+/*
+ * Draws the shipBoard and shotBoard to stdout.
+ * Uses Unicode characters to create the ships.
+*/
+void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], Ship ships[], int opponentBoard[][WIDTH], int opponentShots[][WIDTH]) {
     setlocale(LC_ALL, "");
 
     //Print column headers for both boards
@@ -82,12 +85,28 @@ void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], int opponentBoard
         //Print row labels and your shipboard (left)
         printf("%c| ", 'A' + i);
         for (int j = 0; j < WIDTH; j++) {
-            if (shipBoard[i][j]) {
-                if (opponentShots[i][j])    boardChar = L'□';
-                else                        boardChar = L'■';
+            int shipID;
+            if (shipID = shipBoard[i][j]) { //Test if there is a ship and save the shipID
+                Ship ship = ships[shipID-1];
+                Pos tailpos; //Find the tail position of the ship
+                tailpos.x = ship.headpos.x + ship.length * !ship.isVertical;
+                tailpos.y = ship.headpos.y + ship.length * ship.isVertical;
+
+
+                if (ship.headpos.x == i && ship.headpos.y == j) {
+                    if (opponentShots[i][j])    boardChar = ship.isVertical ? L'△' : L'◁'; //Front has been hit
+                    else                        boardChar = ship.isVertical ? L'▲' : L'◀'; //Front has not been hit
+                } else if (tailpos.x == i && tailpos.y == j) {
+                    if (opponentShots[i][j])    boardChar = ship.isVertical ? L'▽' : L'▷'; //Back has been hit
+                    else                        boardChar = ship.isVertical ? L'▼' : L'▶'; //Back has not been hit
+                } else {
+                    if (opponentShots[i][j])    boardChar = L'□'; //Ship has been hit
+                    else                        boardChar = L'■'; //Ship has not been hit
+                }
+                
             } else {
-                if (opponentShots[i][j])    boardChar = L'X';
-                else                        boardChar = L'◌';
+                if (opponentShots[i][j])    boardChar = L'X'; //Miss shot
+                else                        boardChar = L'◌'; //Empty 
             }
             printf("%lc ", boardChar);
         }

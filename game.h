@@ -26,7 +26,7 @@ typedef struct {
 void generateBoard(int shipBoard[][WIDTH], Ship ships[]);
 
 //Draws both the shipBoard and shotBoard to the screen
-void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], int opponentBoard[][WIDTH], int opponentShots[][WIDTH]);
+void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], Ship ships[], int opponentBoard[][WIDTH], int opponentShots[][WIDTH]);
 
 //Shoots at the given (x, y) position on the targetBoard
 //Updates the shotBoard with hit (1), miss (-1), or untouched (0)
