@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 Updated Development Plan - November 27, 2024
 
-=======
->>>>>>> 8e758a6ae22759bded27c7e780e04c5f34ff083a
 https://github.com/Sam-Scott-McMaster/the-team-assignment-team-19
 
 Name: Lukas Buehlmann
@@ -25,30 +22,6 @@ Name: Xu(Shawn) Lin
 Student #: 400116428
 GitHub ID: XuShawnLin
 
-<<<<<<< HEAD
-Title of Project: Sinking ships
-
-Increment 1 - Target date Nov. 20, 2024:
-  The player board prints and they can see the locations of their randomly placed ships. The player can see the opponent's blank
-  board while they choose the target. The player can shoot to two coordinates at a time on the opponent's board.
-  Program can be run from terminal with flags for playing against computer. There is a proper --help option
-  and documentation. A workflow and test cases are set up for a CI pipeline. There is one computer difficulty to play against.
-  Message appears once all boards have been hit.
-
-  Work completed.
-  
-  Lukas: make opponent AI
-  Connor: make workflow, tests, and README.md
-  Kylie: make a main function that calls game logic functions and handles flags
-  Alexis: create the game logic and functions
-  Shawn: ensure the printing function works to display the board and ships in the terminal
-
-Increment 2 - Target date Dec. 2, 2024:
-  Program now has options for multiple levels of computer difficulty. There is also an option to play against another
-  player on the same command line which is decided by a flag on program startup. Program can also be set to play on an 
-  N x M board size with a proportional amount of total ships. This is also specified as an optional flag.
-  
-=======
 Updated Development Plan - November 27, 2024
 
 Title - Sinking Ships 
@@ -65,16 +38,11 @@ Increment 2 - Target date December 2, 2024
 Program can be run from terminal for two players. Players should be able to place their own ships.
 Program should now have different levels of dificulty.
 
->>>>>>> 8e758a6ae22759bded27c7e780e04c5f34ff083a
   Lukas: create the new opponent difficulties
   Connor: add more test cases for the new possible constraints and situations
   Kylie: add more flag option handling and ability to play aginst another player
   Alexis: add ability for game to work with a variable sized board
-<<<<<<< HEAD
   Shawn: add player ship placemnt choices option
-=======
-
->>>>>>> 8e758a6ae22759bded27c7e780e04c5f34ff083a
 
 Increment 3 - Target date Dec. 4, 2024:
   Program has statistics and achievements tracked throughout game. Abilities or powerups are added to give players more 
@@ -84,11 +52,6 @@ Increment 3 - Target date Dec. 4, 2024:
   Lukas: working on LAN play
   Connor: helping to set up sockets and more test cases
   Kylie: manage statistics and achievements
-<<<<<<< HEAD
   Alexis: add abilities functions to game logic
   Shawn: add player ship placement check conditions to ensure the ships are placed within the board with no overlays.
-        add privacy in the the print fucntion ensure the players can only see their own boards.
 
-=======
-  Alexis: add abilities functions to game logic
->>>>>>> 8e758a6ae22759bded27c7e780e04c5f34ff083a
