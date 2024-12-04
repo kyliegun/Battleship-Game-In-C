@@ -6,7 +6,11 @@
 //Define the board size
 #define WIDTH 10
 #define HEIGHT 10
-#define NUM_SHIPS 3  //Number of ships (simplified)
+#define NUM_SHIPS 5  //Number of ships (simplified)
+
+int SHIP_LENGTHS[];
+
+//const int SHIP_LENGTHS[] = {2, 3, 3, 4, 5};
 
 typedef struct {
     int x;  //x position of the ship
@@ -37,6 +41,9 @@ int shoot(int x, int y, int targetBoard[][WIDTH], int shotBoard[][WIDTH]);
 
 //Checks if a specific ship with ID 'id' is sunk based on shots fired and the ship's position
 bool isSunk(Ship ships, int shotBoard[][WIDTH]);
+
+// checks if all ships given are sunk based on opponentShots
+bool isAllSunk(Ship ships[], int opponentShots[][WIDTH]);
 
 //Counts how many ships are left, based on shipBoard and shots taken
 int countShipsLeft(Ship ships[], int shotBoard[][WIDTH]);
