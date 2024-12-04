@@ -39,17 +39,29 @@ Pos *freeSpace(int shotBoard[][WIDTH], int *size) {
     return coords;
 }
 
+/**
+ * @brief finds all ship positions that have been hit but that ship is not sunk yet
+ * 
+ * @param shotBoard the opponent's collection of shots as a 2D int array
+ * @param size the size of the returned array to be modified as side effect
+ * @param ships the collection of the player's ships
+ * @return Pos* an array of positions that are hit
+ */
 Pos *findHitShipCoords(int shotBoard[][WIDTH], int *size, Ship ships[]) {
+
+    // allocate space for return
     Pos *coords = malloc(sizeof(Pos) * HEIGHT*WIDTH);
     if (coords == NULL) {
         return NULL;
     }
+
     bool shipSunk;
     int n = 0;
     Ship ship;
     int hit;
     int hitCount;
 
+    // find the max ship length
     int longestShip = 0;
     for (int i = 0;i < NUM_SHIPS;i++) {
         if (ships[i].length > longestShip) {
@@ -60,14 +72,15 @@ Pos *findHitShipCoords(int shotBoard[][WIDTH], int *size, Ship ships[]) {
     Pos shipCoords[longestShip];
     Pos shipPiece;
 
-    // loop through each ship and find coordinates of ships that are hit but the ship is not sunk
+    // loop through each ship and find coordinates of ships that are hit but not sunk
     for (int i = 0;i < NUM_SHIPS;i++) {
         ship = ships[i];
         hitCount = 0;
         
+        // first copy all ship positions that are hit into shipCoord and track total hit
         for (int j = 0; j < ship.length; j++) {
-            shipPiece.y = ship.headpos.y + i*ship.isVertical;
-            shipPiece.x = ship.headpos.x + i*(!ship.isVertical);
+            shipPiece.y = ship.headpos.y + j*ship.isVertical;
+            shipPiece.x = ship.headpos.x + j*(!ship.isVertical);
 
             hit = shotBoard[shipPiece.y][shipPiece.x];
             if (hit == 1) {
@@ -77,11 +90,12 @@ Pos *findHitShipCoords(int shotBoard[][WIDTH], int *size, Ship ships[]) {
             }
         }
 
+        // make sure the ship is hit but not sunk and then add those values into the coords
         if (0 < hitCount && hitCount < ship.length) {
-            for (int i=0;i < ship.length;i++) {
-                coords[n] = shipCoords[i];  // if stuff goes wrong check this for assign by ref
-                n++;
+            for (int k=0;k < hitCount;k++) {
+                coords[n + k] = shipCoords[k];
             }
+            n += hitCount;
         }
     }
 
@@ -122,13 +136,10 @@ Pos mediumMode(int shotBoard[][WIDTH], Ship ships[]) {
     int size;
     Pos target;
     Pos *coordArray = findHitShipCoords(shotBoard, &size, ships);
-    for (int i=0;i < size;i++) {
-        printf("x: %d, y: %d\n", (coordArray+i)->x, (coordArray+i)->y);
-    }
 
-    if (coordArray == NULL) {
-        printf("No available shots. Something has gone wrong");
-        return;
+    if (size == 0 && coordArray == NULL) {
+        target = easyMode(shotBoard);
+        return target;
     }
 
     // chooses a random position within the available spaces
