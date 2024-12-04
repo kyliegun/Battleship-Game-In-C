@@ -39,11 +39,15 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
     // User interface to get a valid coordinate and verticality. Then add the ships to shipBoard
     for (int id = 1; id <= NUM_SHIPS; id++) {
         
-        Ship *ship = &ships[id-1];
+        // Instantiate known ship attributes
+        Ship *ship = &ships[id - 1];
+        ship->shipID = id;
+        ship->length = SHIP_LENGTHS[id - 1];
+        
+        // Instantiate user input and flag variables
         char row;
         int col;
         char verticality;
-        
         bool validInput = false; // for the do-while loop so it only exits after validating the inputs
 
         // Get ship start position from the user and make sure it is within the range and is empty
@@ -57,11 +61,11 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
             col -= 1;
 
             // Check if the user input is within the board and the position is empty(0)
-            if (row < 0 || row > 9 || col < 0 || col > 0) {
+            if (row < 0 || row >= WIDTH || col < 0 || col >= HEIGHT) {
                 printf("Please enter a coordinate within the board!\n");
                 continue;
-
-            } else if (shipBoard[row][col] != 0) {
+            }
+            else if (shipBoard[row][col] != 0) {
                 printf("There's already a ship here. Please try again\n");
                 continue;
             }
@@ -74,7 +78,7 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
 
             // Check if the ship can be placed vertically and set the validInput flag to true if so.
             // Otherwise, validInput is set to false
-            if (verticality == 'v' && ((col + ship->length)<= 9) ) {
+            if (verticality == 'v' && ((col + ship->length) < HEIGHT) ) {
                 
                 // Check for overlaps
                 for (int i = 1; i < ship->length; i++) {
@@ -91,7 +95,7 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
             }
             // Check if the ship can be placed horizontally and set the validInput flag to true if so.
             // Otherwise, validInput is set to false
-            else if (verticality == 'h' && ((row + ship->length)<= 9) ) {
+            else if (verticality == 'h' && ((row + ship->length) < WIDTH) ) {
 
                 //Check for overlaps
                 for (int i = 1; i < ship->length; i++) {
@@ -111,17 +115,14 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
                 continue;
             }
 
-         } while (validInput = false); // Continuously prompt the user till all the inputs are valid.
+        } while (validInput = false); // Continuously prompt the user till all the inputs are valid.
         
-        // Instantiate the ship attributes
-        ship->shipID = id;
+        // Instantiate the ship head positions after validation
         ship->headpos.x = col;
         ship->headpos.y = row;
-        ship->length = 3;
 
         // Place the ship in the shipBoard array
         addShip(shipBoard, *ship);
-	    
     }
 }
 
