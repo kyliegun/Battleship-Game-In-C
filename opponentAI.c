@@ -122,6 +122,9 @@ Pos mediumMode(int shotBoard[][WIDTH], Ship ships[]) {
     int size;
     Pos target;
     Pos *coordArray = findHitShipCoords(shotBoard, &size, ships);
+    for (int i=0;i < size;i++) {
+        printf("x: %d, y: %d\n", (coordArray+i)->x, (coordArray+i)->y);
+    }
 
     if (coordArray == NULL) {
         printf("No available shots. Something has gone wrong");
@@ -139,30 +142,30 @@ Pos mediumMode(int shotBoard[][WIDTH], Ship ships[]) {
     switch (randNum) {
         case 0:
             // left side of target
-            if (target.x > 0 && shotBoard[target.y][target.x-1] != -1) {
+            if (target.x > 0 && shotBoard[target.y][target.x-1] == 0) {
                 target.x--;
                 return target;
             }
         case 1:
             // right side of target
-            if (target.x < WIDTH - 1 && shotBoard[target.y][target.x+1] != -1) {
+            if (target.x < WIDTH - 1 && shotBoard[target.y][target.x+1] == 0) {
                 target.x++;
                 return target;
             }
         case 2:
             // top side of target
-            if (target.y > 0 && shotBoard[target.y-1][target.x] != -1) {
+            if (target.y > 0 && shotBoard[target.y-1][target.x] == 0) {
                 target.y--;
                 return target;
             }
         case 3:
             // bottom side of target
-            if (target.y < HEIGHT - 1 && shotBoard[target.y+1][target.x] != -1) {
+            if (target.y < HEIGHT - 1 && shotBoard[target.y+1][target.x] == 0) {
                 target.y++;
                 return target;
             }
         default:
-            printf("Something went wrong. No valid target found");
+            target = easyMode(shotBoard);
 
     }
     return target;

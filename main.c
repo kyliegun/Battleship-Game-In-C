@@ -118,7 +118,7 @@ int main(int argc, char *argv[]) {
 			xTarget = 0;
 			yTarget = 0;
 
-			opponentShoot(&xTarget, &yTarget, 1, opponentShotBoard);
+			opponentShoot(&xTarget, &yTarget, 2, opponentShotBoard, ships);
 			printf("\n\nOpponent shoots at %c%d\n\n", yTarget+65, xTarget);
 
 			result = shoot(xTarget, yTarget, shipBoard, opponentShotBoard);
