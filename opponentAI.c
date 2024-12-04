@@ -17,31 +17,38 @@ void generateOpponentBoard(int shipBoard[][WIDTH], Ship ships[]) {
     int randX = 0;
     int randY = 0;
     int verticality = 0;
+    int n = 0;
 
     Ship *ship;
 
     while (placed < NUM_SHIPS) {
         ship = &ships[placed];
-        verticality = rand() % 2;
-        randX = rand() % (WIDTH - !verticality*SHIP_LENGTHS[placed]);
-        randY = rand() % (HEIGHT - verticality*SHIP_LENGTHS[placed]);
 
+        n = 0;
+        while (n < 10000) {
+            verticality = rand() % 2;
+            randX = rand() % (WIDTH - !verticality*SHIP_LENGTHS[placed]);
+            randY = rand() % (HEIGHT - verticality*SHIP_LENGTHS[placed]);
 
+            ship->shipID = placed+1;
+            ship->headpos.x = randX;
+            ship->headpos.y = randY;
+            ship->isVertical = verticality;
+            ship->length = SHIP_LENGTHS[placed];
 
-        ship->shipID = placed+1;
-        ship->headpos.x = randX;
-        ship->headpos.y = randY;
-        ship->isVertical = verticality;
-        ship->length = SHIP_LENGTHS[placed];
-
-        addShip(shipBoard, *ship);
-        placed++;
+            if (isShipValid(*ship, shipBoard)) {
+                addShip(shipBoard, *ship);
+                placed++;
+                continue;
+            }
+            n++;
+        }
     }
 }
 
 bool isShipValid(Ship ship, int shipBoard[][WIDTH]) {
     for (int i=0;i < ship.length;i++) {
-        if (shipBoard[ship.headpos.x][ship.headpos.y] != 0) {
+        if (shipBoard[ship.headpos.x + i*!ship.isVertical][ship.headpos.y + i*ship.isVertical] != 0) {
             return false;
         }
     }

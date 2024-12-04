@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
 	while(1){
 		if (turn == 0) {
 			// drawing the boards
-			drawBoard(shipBoard, shotBoard, opponentShipBoard, opponentShotBoard);
+			drawBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
 			printf("\n");
 
 			// asking the player for cooridnates
