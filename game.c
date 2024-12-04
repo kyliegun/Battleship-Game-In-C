@@ -4,6 +4,8 @@
 #include <wchar.h>
 #include <locale.h>
 
+static const int SHIP_LENGTHS[] = {2, 3, 3, 4, 5};
+
 /*
  * Parameter names listed here are (from perspective of the player):
  *  shipBoard[][] - your own integer array of ship positions
@@ -144,7 +146,7 @@ void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], Ship ships[], int
 /*
  * Shoots at position given by row, col on targetBoard.
  * Places result onto shotBoard as 1 for hit and -1 for miss.
- * Returns a 0 for miss, 1 for hit, or 2 for hit and sunk (uses isSunk for this check)
+ * Returns a 0 for miss or 1 for hit
 */
 int shoot(int col, int row, int targetBoard[][WIDTH], int shotBoard[][WIDTH]) {
     if (targetBoard[row][col] != 0) {
@@ -172,6 +174,14 @@ bool isSunk(Ship ship, int shotBoard[][WIDTH]) {
     return true;
 }
 
+bool isAllSunk(Ship ships[], int opponentShots[][WIDTH]) {
+    int result = 1;
+    for (int i=0;i < NUM_SHIPS;i++) {
+        result *= isSunk(ships[i], opponentShots);
+    }
+    return result;
+}
+
 /*
  * Counts the number of ships left (maybe check isSunk on every ship id)
  * Can be used to check for a win or as output after a ship is sunk
@@ -179,7 +189,7 @@ bool isSunk(Ship ship, int shotBoard[][WIDTH]) {
 */
 int countShipsLeft(Ship ships[], int shotBoard[][WIDTH]) {
     int shipsLeft = NUM_SHIPS;
-    for (int i = 1; i <= NUM_SHIPS; i++) {
+    for (int i = 0; i < NUM_SHIPS; i++) {
         if (isSunk(ships[i], shotBoard)) {
             shipsLeft --;
         }

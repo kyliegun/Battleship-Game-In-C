@@ -11,7 +11,42 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "opponentAI.h"
-#include "game.h"
+
+void generateOpponentBoard(int shipBoard[][WIDTH], Ship ships[]) {
+    int placed = 0;
+    int randX = 0;
+    int randY = 0;
+    int verticality = 0;
+
+    Ship *ship;
+
+    while (placed < NUM_SHIPS) {
+        ship = &ships[placed];
+        verticality = rand() % 2;
+        randX = rand() % (WIDTH - !verticality*SHIP_LENGTHS[placed]);
+        randY = rand() % (HEIGHT - verticality*SHIP_LENGTHS[placed]);
+
+
+
+        ship->shipID = placed+1;
+        ship->headpos.x = randX;
+        ship->headpos.y = randY;
+        ship->isVertical = verticality;
+        ship->length = SHIP_LENGTHS[placed];
+
+        addShip(shipBoard, *ship);
+        placed++;
+    }
+}
+
+bool isShipValid(Ship ship, int shipBoard[][WIDTH]) {
+    for (int i=0;i < ship.length;i++) {
+        if (shipBoard[ship.headpos.x][ship.headpos.y] != 0) {
+            return false;
+        }
+    }
+    return true;
+}
 
 /**
  * @brief Finds all 0 elements of a 2D array and returns an array of position values(x, y)
