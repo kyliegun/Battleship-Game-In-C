@@ -70,7 +70,7 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
             printf("Do you want the ship to be verital or horizontal? (v/h): ");
             scanf("%c", &verticality);
             
-            verticality = tolower(&verticality);
+            verticality = tolower(verticality);
 
             // Check if the ship can be placed vertically and set the validInput flag to true if so.
             // Otherwise, validInput is set to false
