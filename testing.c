@@ -4,35 +4,24 @@
 #include <stdlib.h>
 #include <wchar.h>
 
+void makeShip(int x, int y, bool vertical, int length, int ID, Ship ships[]) {
+    Ship* ship = &ships[ID-1];
+    ship->headpos.x = x;
+    ship->headpos.y = y;
+    ship->isVertical = vertical;
+    ship->length = length;
+    ship->shipID = ID;
+}
+
 int main(int argc, char *argv[]) {
-    wchar_t *s = L"▲v▲";
-    printf("%ls\n", s);
+    int shipBoard[HEIGHT][WIDTH] = {0};
+	int shotBoard[HEIGHT][WIDTH] = {0};
+	int opponentShipBoard[HEIGHT][WIDTH] = {0};
+	int opponentShotBoard[HEIGHT][WIDTH] = {0};
+	Ship ships[NUM_SHIPS];
+	Ship opponentShips[NUM_SHIPS];
 
-    int shipBoard[HEIGHT][WIDTH] = {
-        {1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0},
-        {0, 0, 3, 3, 6, 0, 0, 0, 2, 0},
-        {0, 0, 0, 0, 6, 0, 0, 0, 2, 0},
-        {0, 0, 0, 0, 4, 0, 0, 0, 2, 0},
-        {0, 8, 0, 0, 4, 0, 0, 0, 2, 0},
-        {0, 8, 0, 0, 4, 0, 0, 5, 0, 0},
-        {0, 8, 0, 0, 4, 0, 0, 5, 0, 0},
-        {0, 7, 7, 7, 7, 7, 7, 5, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-    };
-
-    int shotBoard[HEIGHT][WIDTH] = {
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-    };
-
-    drawBoard(shipBoard, shotBoard);
+    makeShip(0, 0, true, 3, 1, ships);
+    addShip(shipBoard, ships[0]);
+    drawBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
 }
