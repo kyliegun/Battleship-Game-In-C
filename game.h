@@ -28,6 +28,9 @@ void generateBoard(int shipBoard[][WIDTH], Ship ships[]);
 //Draws both the shipBoard and shotBoard to the screen
 void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], Ship ships[], int opponentBoard[][WIDTH], int opponentShots[][WIDTH]);
 
+//Add a ship to the board
+void addShip(int shipBoard[HEIGHT][WIDTH], Ship ship);
+
 //Shoots at the given (x, y) position on the targetBoard
 //Updates the shotBoard with hit (1), miss (-1), or untouched (0)
 int shoot(int x, int y, int targetBoard[][WIDTH], int shotBoard[][WIDTH]);
