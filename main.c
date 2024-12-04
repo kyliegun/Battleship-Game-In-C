@@ -40,7 +40,18 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-	int shipBoard[HEIGHT][WIDTH] = {0};
+	int shipBoard[HEIGHT][WIDTH] = {
+        {1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0},
+        {0, 0, 3, 3, 6, 0, 0, 0, 2, 0},
+        {0, 0, 0, 0, 6, 0, 0, 0, 2, 0},
+        {0, 0, 0, 0, 4, 0, 0, 0, 2, 0},
+        {0, 8, 0, 0, 4, 0, 0, 0, 2, 0},
+        {0, 8, 0, 0, 4, 0, 0, 5, 0, 0},
+        {0, 8, 0, 0, 4, 0, 0, 5, 0, 0},
+        {0, 7, 7, 7, 7, 7, 7, 5, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    };
 	int shotBoard[HEIGHT][WIDTH] = {0};
 	int opponentShipBoard[HEIGHT][WIDTH] = {0};
 	int opponentShotBoard[HEIGHT][WIDTH] = {0};
@@ -54,6 +65,7 @@ int main(int argc, char *argv[]) {
 	generateOpponentBoard(opponentShipBoard, opponentShips);
 	// drawBoard(opponentShipBoard, opponentShotBoard, opponentShips, shipBoard, shotBoard);
 
+
 	int x, y;
 	int xTarget;
 	int yTarget;
@@ -64,14 +76,14 @@ int main(int argc, char *argv[]) {
 	while(1){
 		if (turn == 0) {
 			// drawing the boards
-			drawBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
+			drawBoard(shipBoard, shotBoard, opponentShipBoard, opponentShotBoard);
 			printf("\n");
 
 			// asking the player for cooridnates
 			printf("Enter your shot (e.g., A1, B2): ");
 			char rowChar;
 			int col;
-			scanf(" %c%d" , &rowChar, &col); // reads input row and column
+			scanf("%c %d" , &rowChar, &col); // reads input row and column
 
 			// convert the row from letter to index
 			int row = rowChar - 'A';
