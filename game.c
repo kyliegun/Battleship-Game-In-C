@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <wchar.h>
 #include <locale.h>
+#include <ctype.h>
 
 /*
  * Parameter names listed here are (from perspective of the player):
@@ -28,38 +29,75 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
     // prompt the player to create ship of N length
     // get input
     // either add ship at index or tell invalid spot
-    // Initialize the shipboard with 0s (empty)
+
+
+    // Initialize the shipboard 2D array with 0s (empty)
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
             shipBoard[i][j] = 0;
         }
     }
 
+    // User interface to get a valid coordinate and verticality. Then add the ship to shipBoard
     for (int id = 1; id <= NUM_SHIPS; id++) {
         
         Ship *ship = &ships[id];
         char row;
         int col;
         char verticality;
-        
-        printf("Enter the ship coordinate in the form of 'A1': ");
-        scanf("%c%d", &row, &col);
-        // Convert coordinate to intergers
 
-        row -= 'A';
-        col -= 1;
+        do {
+            // Get ship start position from the user and make sure it is within the range and is empty
+            printf("Enter the start position of the ship in a coordinate form in the range of 'A1' to 'J10'): ");
+            scanf("%c%d", &row, &col);
 
+            // Convert coordinates to indices
+            row -= 'A';
+            col -= 1;
 
-        printf("Do you want the ship to be verital or horizontal? (V/H): ");
-        scanf("%c", &verticality);
-        
-        if (verticality == 'V') {
-            ship->isVertical = true;
-        } else if (verticality == 'H') {
-            ship->isVertical = false;
-        } else {
-            ;
-        }
+            if (row < 0 || row > 9 || col < 0 || col > 0) {
+                printf("Please enter a coordinate within the board!\n");
+                continue;
+
+            } else if (shipBoard[row][col] != 0) {
+                printf("There's already a ship here. Please try again");
+                continue;
+
+            }
+
+            // Get the verticality of the ship from the user and make sure it won't extend out of bounds and no overlaps
+            printf("Do you want the ship to be verital or horizontal? (v/h): ");
+            scanf("%c", &verticality);
+            
+            verticality = tolower(&verticality);
+
+            if (verticality == 'v') {
+
+                for (int i = 1; i < ship->length; i++) {
+                    if (shipBoard[row][col + i] != 0){
+                        printf("There is a ship in the way");
+                        break;
+                    }
+                }
+
+                ship->isVertical = true;
+            }
+
+            else if (verticality == 'h') {
+
+                for (int i = 1; i < ship->length; i++) {
+                    if (shipBoard[row + i][col] != 0){
+                        printf("There is a ship in the way");
+                        break;;
+                    }
+                }
+                ship->isVertical = false;
+
+            } else {
+                printf("Please enter 'v' or 'h'!\n");
+            }
+            
+        } while (row < 0 || row > 9 || col < 0 || col > 0 || verticality != 'v' || verticality != 'h');
         
         ship->shipID = id;
         ship->headpos.x = col;
@@ -72,6 +110,9 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
 
 // Helper funciton to add ships to the board based on the user input coordinates.
 void addShip(int shipBoard[HEIGHT][WIDTH], Ship ship){
+    
+    // *Check if the start and the end of the ships are in bounds
+    // *Check for duplicate ship positions and cross-overs
     for (int i = 0; i < ship.length; i++) {
         if (ship.isVertical) {
             shipBoard[ship.headpos.y + i][ship.headpos.x] = ship.shipID;
