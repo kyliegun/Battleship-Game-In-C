@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include "game.h"
 #include "opponentAI.h"
 
@@ -39,9 +40,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-	int shipBoard[HEIGHT][WIDTH] = {0};
-	int shotBoard[HEIGHT][WIDTH] = {0};
-	int opponentShipBoard[HEIGHT][WIDTH] = {
+	int shipBoard[HEIGHT][WIDTH] = {
         {1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 2, 0},
         {0, 0, 3, 3, 6, 0, 0, 0, 2, 0},
@@ -53,6 +52,8 @@ int main(int argc, char *argv[]) {
         {0, 7, 7, 7, 7, 7, 7, 5, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
+	int shotBoard[HEIGHT][WIDTH] = {0};
+	int opponentShipBoard[HEIGHT][WIDTH] = {0};
 	int opponentShotBoard[HEIGHT][WIDTH] = {0};
 	Ship ships[NUM_SHIPS];
 	Ship opponentShips[NUM_SHIPS];
@@ -61,7 +62,9 @@ int main(int argc, char *argv[]) {
 
 	// generating the player shipBoard
 	generateBoard(shipBoard, ships);
-	// generateBoard(opponentShipBoard, opponentShips);
+	generateOpponentBoard(opponentShipBoard, opponentShips);
+	// drawBoard(opponentShipBoard, opponentShotBoard, opponentShips, shipBoard, shotBoard);
+
 
 	int x, y;
 	int xTarget;
@@ -73,14 +76,14 @@ int main(int argc, char *argv[]) {
 	while(1){
 		if (turn == 0) {
 			// drawing the boards
-			drawBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
+			drawBoard(shipBoard, shotBoard, opponentShipBoard, opponentShotBoard);
 			printf("\n");
 
 			// asking the player for cooridnates
 			printf("Enter your shot (e.g., A1, B2): ");
 			char rowChar;
 			int col;
-			scanf(" %c%d" , &rowChar, &col); // reads input row and column
+			scanf("%c %d" , &rowChar, &col); // reads input row and column
 
 			// convert the row from letter to index
 			int row = rowChar - 'A';
@@ -106,7 +109,7 @@ int main(int argc, char *argv[]) {
 			sleep(1);
 
 			// checking if all ships are sunk
-			if(countShipsLeft(ships, shotBoard) == 0){
+			if(countShipsLeft(ships, opponentShotBoard) == 0){
 				printf("Congratulations! You have sunk all ships.\n");
 				break;
 			}
@@ -118,8 +121,8 @@ int main(int argc, char *argv[]) {
 			xTarget = 0;
 			yTarget = 0;
 
-			opponentShoot(&xTarget, &yTarget, 1, opponentShotBoard);
-			printf("\n\nOpponent shoots at %c%d\n\n", yTarget+65, xTarget);
+			opponentShoot(&xTarget, &yTarget, 2, opponentShotBoard, ships);
+			printf("\n\nOpponent shoots at %c%d\n\n", yTarget+65, xTarget+1);
 
 			result = shoot(xTarget, yTarget, shipBoard, opponentShotBoard);
 			sleep(1);
