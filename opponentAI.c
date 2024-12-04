@@ -12,6 +12,15 @@
 #include <stdbool.h>
 #include "opponentAI.h"
 
+// change this to anything other than 1 for a set seed
+#define SEED 1
+
+/**
+ * @brief generates a randomized board for the opponent
+ * 
+ * @param shipBoard the 2D int array representing the opponent ship positions
+ * @param ships the collection of opponent ships
+ */
 void generateOpponentBoard(int shipBoard[][WIDTH], Ship ships[]) {
     int placed = 0;
     int randX = 0;
@@ -21,34 +30,34 @@ void generateOpponentBoard(int shipBoard[][WIDTH], Ship ships[]) {
 
     Ship *ship;
 
+    // srand(SEED);
+
+    // 
     while (placed < NUM_SHIPS) {
         ship = &ships[placed];
 
-        n = 0;
-        while (n < 10000) {
-            verticality = rand() % 2;
-            randX = rand() % (WIDTH - !verticality*SHIP_LENGTHS[placed]);
-            randY = rand() % (HEIGHT - verticality*SHIP_LENGTHS[placed]);
+        verticality = rand() % 2;
+        randX = rand() % (WIDTH - !verticality*SHIP_LENGTHS[placed]);
+        randY = rand() % (HEIGHT - verticality*SHIP_LENGTHS[placed]);
 
-            ship->shipID = placed+1;
-            ship->headpos.x = randX;
-            ship->headpos.y = randY;
-            ship->isVertical = verticality;
-            ship->length = SHIP_LENGTHS[placed];
+        // printf("x: %d, y: %d\n", randX, randY);
 
-            if (isShipValid(*ship, shipBoard)) {
-                addShip(shipBoard, *ship);
-                placed++;
-                continue;
-            }
-            n++;
+        ship->shipID = placed+1;
+        ship->headpos.x = randX;
+        ship->headpos.y = randY;
+        ship->isVertical = verticality;
+        ship->length = SHIP_LENGTHS[placed];
+
+        if (isShipValid(*ship, shipBoard)) {
+            addShip(shipBoard, *ship);
+            placed++;
         }
     }
 }
 
 bool isShipValid(Ship ship, int shipBoard[][WIDTH]) {
     for (int i=0;i < ship.length;i++) {
-        if (shipBoard[ship.headpos.x + i*!ship.isVertical][ship.headpos.y + i*ship.isVertical] != 0) {
+        if (shipBoard[ship.headpos.y + i*ship.isVertical][ship.headpos.x + i*!ship.isVertical] != 0) {
             return false;
         }
     }
