@@ -3,3 +3,6 @@ SinkingShips: main.c game.h game.c opponentAI.h opponentAI.c
 
 test: testing.c game.h game.c
 	gcc -o test --coverage testing.c game.c 
+
+debug: main.c game.h game.c opponentAI.h opponentAI.c
+	gcc -D DEBUG -o debug --coverage main.c game.c opponentAI.c
