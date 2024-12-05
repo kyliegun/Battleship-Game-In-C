@@ -10,10 +10,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 #include "opponentAI.h"
 
-// change this to anything other than 1 for a set seed
-#define SEED 1
+// sets the seed for random number generation
+// #define SEED 1
 
 /**
  * @brief generates a randomized board for the opponent
@@ -30,24 +31,26 @@ void generateOpponentBoard(int shipBoard[][WIDTH], Ship ships[]) {
 
     Ship *ship;
 
-    // srand(SEED);
+    // random seed is set to the current time to be different each runtime
+    srand(time(NULL));
 
-    // 
+    // loops until all ships are placed
     while (placed < NUM_SHIPS) {
         ship = &ships[placed];
 
+        // first generates a random position and orientation within the possible starting points
         verticality = rand() % 2;
         randX = rand() % (WIDTH - !verticality*SHIP_LENGTHS[placed]);
         randY = rand() % (HEIGHT - verticality*SHIP_LENGTHS[placed]);
 
-        // printf("x: %d, y: %d\n", randX, randY);
-
+        // create the ship definition
         ship->shipID = placed+1;
         ship->headpos.x = randX;
         ship->headpos.y = randY;
         ship->isVertical = verticality;
         ship->length = SHIP_LENGTHS[placed];
 
+        // make sure the ship is not intersecting another before placing it
         if (isShipValid(*ship, shipBoard)) {
             addShip(shipBoard, *ship);
             placed++;
@@ -55,6 +58,15 @@ void generateOpponentBoard(int shipBoard[][WIDTH], Ship ships[]) {
     }
 }
 
+/**
+ * @brief checks to see if a given ship can be placed in the board without overlap
+ * Does not check for out of array bounds
+ * 
+ * @param ship The ship struct to place
+ * @param shipBoard the board to place it into
+ * @return true if the ship can be placed
+ * @return false if there is an intersection in the board
+ */
 bool isShipValid(Ship ship, int shipBoard[][WIDTH]) {
     for (int i=0;i < ship.length;i++) {
         if (shipBoard[ship.headpos.y + i*ship.isVertical][ship.headpos.x + i*!ship.isVertical] != 0) {
