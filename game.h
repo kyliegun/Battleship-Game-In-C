@@ -8,7 +8,7 @@
 #define HEIGHT 10
 #define NUM_SHIPS 5  //Number of ships (simplified)
 
-static const int SHIP_LENGTHS[NUM_SHIPS];
+static const int SHIP_LENGTHS[NUM_SHIPS] = {2, 3, 3, 4, 5};
 
 //const int SHIP_LENGTHS[] = {2, 3, 3, 4, 5};
 

@@ -5,8 +5,6 @@
 #include <locale.h>
 #include <ctype.h>
 
-static const int SHIP_LENGTHS[] = {2, 3, 3, 4, 5};
-
 /*
  * Parameter names listed here are (from perspective of the player):
  *  shipBoard[][] - your own integer array of ship positions
