@@ -20,6 +20,15 @@ jobs:
         with:
           name: SinkingShips
           path: ./SinkingShips	
+      
+      - name: build test
+        run: make test; ./test <testing.txt >/dev/nul; gcov test-game.c
+      
+      - name: upload Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Results			
+          path: ./test_results.txt	
         
 
 
