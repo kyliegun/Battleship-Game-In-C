@@ -238,14 +238,6 @@ bool isSunk(Ship ship, int shotBoard[][WIDTH]) {
     return true;
 }
 
-bool isAllSunk(Ship ships[], int opponentShots[][WIDTH]) {
-    int result = 1;
-    for (int i=0;i < NUM_SHIPS;i++) {
-        result *= isSunk(ships[i], opponentShots);
-    }
-    return result;
-}
-
 /*
  * Counts the number of ships left (maybe check isSunk on every ship id)
  * Can be used to check for a win or as output after a ship is sunk
