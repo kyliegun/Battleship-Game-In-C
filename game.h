@@ -27,7 +27,7 @@ typedef struct {
 
 //Function Declarations: 
 //Generates the shipboard by placing ships on it
-void generateBoard(int shipBoard[][WIDTH], Ship ships[]);
+void generateBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], Ship ships[], int opponentBoard[][WIDTH], int opponentShots[][WIDTH]);
 
 //Draws both the shipBoard and shotBoard to the screen
 void drawBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], Ship ships[], int opponentBoard[][WIDTH], int opponentShots[][WIDTH]);

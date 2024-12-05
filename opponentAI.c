@@ -10,8 +10,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 #include "opponentAI.h"
 
+#define DEBUG
+
+// sets the seed for random number generation
+// #define SEED 1
+
+/**
+ * @brief generates a randomized board for the opponent
+ * 
+ * @param shipBoard the 2D int array representing the opponent ship positions
+ * @param ships the collection of opponent ships
+ */
 void generateOpponentBoard(int shipBoard[][WIDTH], Ship ships[]) {
     int placed = 0;
     int randX = 0;
@@ -21,34 +33,50 @@ void generateOpponentBoard(int shipBoard[][WIDTH], Ship ships[]) {
 
     Ship *ship;
 
+    // random seed is set to the current time to be different each runtime or 1 on debug
+    #ifdef DEBUG
+        srand(1);
+    #endif
+    #ifndef DEBUG
+        srand(time(NULL));
+    #endif
+
+    // loops until all ships are placed
     while (placed < NUM_SHIPS) {
         ship = &ships[placed];
 
-        n = 0;
-        while (n < 10000) {
-            verticality = rand() % 2;
-            randX = rand() % (WIDTH - !verticality*SHIP_LENGTHS[placed]);
-            randY = rand() % (HEIGHT - verticality*SHIP_LENGTHS[placed]);
+        // first generates a random position and orientation within the possible starting points
+        verticality = rand() % 2;
+        randX = rand() % (WIDTH - !verticality*SHIP_LENGTHS[placed]);
+        randY = rand() % (HEIGHT - verticality*SHIP_LENGTHS[placed]);
 
-            ship->shipID = placed+1;
-            ship->headpos.x = randX;
-            ship->headpos.y = randY;
-            ship->isVertical = verticality;
-            ship->length = SHIP_LENGTHS[placed];
+        // create the ship definition
+        ship->shipID = placed+1;
+        ship->headpos.x = randX;
+        ship->headpos.y = randY;
+        ship->isVertical = verticality;
+        ship->length = SHIP_LENGTHS[placed];
 
-            if (isShipValid(*ship, shipBoard)) {
-                addShip(shipBoard, *ship);
-                placed++;
-                continue;
-            }
-            n++;
+        // make sure the ship is not intersecting another before placing it
+        if (isShipValid(*ship, shipBoard)) {
+            addShip(shipBoard, *ship);
+            placed++;
         }
     }
 }
 
+/**
+ * @brief checks to see if a given ship can be placed in the board without overlap
+ * Does not check for out of array bounds
+ * 
+ * @param ship The ship struct to place
+ * @param shipBoard the board to place it into
+ * @return true if the ship can be placed
+ * @return false if there is an intersection in the board
+ */
 bool isShipValid(Ship ship, int shipBoard[][WIDTH]) {
     for (int i=0;i < ship.length;i++) {
-        if (shipBoard[ship.headpos.x + i*!ship.isVertical][ship.headpos.y + i*ship.isVertical] != 0) {
+        if (shipBoard[ship.headpos.y + i*ship.isVertical][ship.headpos.x + i*!ship.isVertical] != 0) {
             return false;
         }
     }
@@ -71,8 +99,10 @@ Pos *freeSpace(int shotBoard[][WIDTH], int *size) {
             if (shotBoard[i][j] == 0) {
                 (coords + n) -> x = j;
                 (coords + n) -> y = i;
+                // printf("x: %d, y: %d\n", j, i);
                 n++;
             }
+            // printf("x: %d, y: %d, val: %d\n", j, i, shotBoard[i][j]);
         }
     }
 
@@ -156,12 +186,13 @@ Pos easyMode(int shotBoard[][WIDTH]) {
     int size;
     Pos target;
     Pos *coordArray = freeSpace(shotBoard, &size);
+    printf("size of options: %d\n", size);
 
     if (coordArray == NULL) {
         printf("No available shots. Something has gone wrong");
     } else {
         // chooses a random position within the available spaces
-        int randNum = rand() % (size + 1);
+        int randNum = rand() % (size);
         target = *(coordArray + randNum);
         free(coordArray);
         return target;
@@ -225,14 +256,90 @@ Pos mediumMode(int shotBoard[][WIDTH], Ship ships[]) {
 }
 
 /**
+ * @brief The hard opponent difficulty. Shoots at every other cell and can track hit ships
+ * 
+ * @param shotBoard - the 2D array of current opponent shots
+ * @return Pos - The position to shoot at
+ */
+Pos hardMode(int shotBoard[][WIDTH], Ship ships[]) {
+    int size = 0;
+    Pos target;
+    Pos *coordArray = findHitShipCoords(shotBoard, &size, ships);
+    printf("hit ships: %d\n", size);
+    for (int i=0;i < size;i++) {
+        printf("x: %d, y: %d\n", coordArray[i].x, coordArray[i].y);
+    }
+
+    // create a shotboard replica where every other cell is a 1
+    // This tricks the easyMode function into only shooting at every other cell
+    int fakeShotBoard[HEIGHT][WIDTH] = {0};
+    for (int i=0;i < HEIGHT;i++) {
+        for (int j=0;j < WIDTH;j++) {
+            if ((i + j) % 2 == 0) {
+                fakeShotBoard[i][j] = shotBoard[i][j];
+            } else {
+                fakeShotBoard[i][j] = 1;
+            }
+            // printf("%d ", fakeShotBoard[i][j]);
+        }
+        // printf("\n");
+    }
+
+    if (size == 0 && coordArray == NULL) {
+        target = easyMode(fakeShotBoard);
+        return target;
+    }
+
+    // chooses a random position within the available spaces
+    int randNum = rand() % (size + 1);
+    target = *(coordArray + randNum);
+    free(coordArray);
+    coordArray = NULL;
+
+    // choose a random shift direction
+    randNum = randNum % 4;
+    switch (randNum) {
+        case 0:
+            // left side of target
+            if (target.x > 0 && (shotBoard[target.y][target.x-1] == 0)) {
+                target.x--;
+                return target;
+            }
+        case 1:
+            // right side of target
+            if (target.x < WIDTH - 1 && (shotBoard[target.y][target.x+1] == 0)) {
+                target.x++;
+                return target;
+            }
+        case 2:
+            // top side of target
+            if (target.y > 0 && (shotBoard[target.y-1][target.x] == 0)) {
+                target.y--;
+                return target;
+            }
+        case 3:
+            // bottom side of target
+            if (target.y < HEIGHT - 1 && (shotBoard[target.y+1][target.x] == 0)) {
+                target.y++;
+                return target;
+            }
+        default:
+            target = easyMode(fakeShotBoard);
+
+    }
+    return target;
+}
+
+/**
  * @brief The function to manage opponent shooting
  * 
  * @param x - the intended x position to shoot at
  * @param y - the intended y position to shoot at
  * @param difficulty - the difficulty level. 1=easy
  * @param shotBoard - the 2D array representing the places that have been shot at
+ * @param playerShips - an array of the player's ships
  */
-void opponentShoot(int *x, int *y, int difficulty, int shotBoard[][WIDTH], Ship ships[]) {
+void opponentShoot(int *x, int *y, int difficulty, int shotBoard[][WIDTH], Ship playerShips[]) {
     Pos target;
     switch (difficulty) {
         case 1:
@@ -241,7 +348,12 @@ void opponentShoot(int *x, int *y, int difficulty, int shotBoard[][WIDTH], Ship 
             *y = target.y;
             break;
         case 2:
-            target = mediumMode(shotBoard, ships);
+            target = mediumMode(shotBoard, playerShips);
+            *x = target.x;
+            *y = target.y;
+            break;
+        case 3:
+            target = hardMode(shotBoard, playerShips);
             *x = target.x;
             *y = target.y;
             break;

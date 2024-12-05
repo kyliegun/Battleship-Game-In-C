@@ -27,9 +27,10 @@ static const int SHIP_LENGTHS[] = {2, 3, 3, 4, 5};
 /* Generates the ships on a board of dimensions HEIGHT X WIDTH.
  * Prompt the user to enter where they want to place the ship and its direction.
  */
-void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
+void generateBoard(int shipBoard[][WIDTH], int shotBoard[][WIDTH], Ship ships[], int opponentBoard[][WIDTH], int opponentShots[][WIDTH]) {
 
     printf("\n\tIt's time to place your ship!\n");
+    
 
     // User interface to get a valid coordinate and verticality. Then add the ships to shipBoard
     for (int id = 1; id <= NUM_SHIPS; id++) {
@@ -47,7 +48,11 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
 
         // Get ship start position from the user and make sure it is within the range and is empty
         do {
-            printf("\n***Keep in mind that the ship can ONLY EXTEND TO THE RIGHT OR DOWNWARDS***\n");
+            // Display the board before and after each ship placement
+            drawBoard(shipBoard, shotBoard, ships, opponentBoard, opponentShots);
+
+            // User interface prompt
+            printf("\n*** Keep in mind that the ship can ONLY EXTEND TO THE RIGHT OR DOWNWARDS ***\n");
             printf("\t[Ship #%d | Ship length: %d]\n", id, ship->length);
             printf("Enter the start position of the ship (A1-J10): ");
             scanf(" %c%d", &row, &col);
@@ -59,28 +64,29 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
 
             // Check if the user input is within the board and the position is empty(0)
             if (row < 0 || row >= WIDTH || col < 0 || col >= HEIGHT) {
-                printf("\n!!!Please enter a coordinate within the board!!!\n\n");
+                printf("\n!!! Please enter a coordinate within the board !!!\n\n");
                 continue;
             }
             else if (shipBoard[row][col] != 0) {
-                printf("\n!!!There's already a ship here. Please try again!!!\n\n");
+                printf("\n!!! There's already a ship here. Please try again !!!\n\n");
                 continue;
             }
             
+
         // Get the verticality of the ship from the user and make sure it won't extend out of bounds and does not overlap other ships
-            printf("\nDo you want the ship to be verital or horizontal? (v/h): ");
+            printf("\nDo you want the ship to be vertical or horizontal? (v/h): ");
             scanf(" %c", &verticality);
             
             verticality = tolower(verticality);
 
             // Check if the ship can be placed vertically and set the validInput flag to true if so.
             // Otherwise, validInput is set to false
-            if (verticality == 'v' && ((col + ship->length) < HEIGHT) ) {
+            if (verticality == 'v' && ((row + ship->length) <= HEIGHT) ) {
                 
                 // Check for overlaps
                 for (int i = 1; i < ship->length; i++) {
-                    if (shipBoard[row][col + i] != 0){
-                        printf("\n!!!There is a ship in the way. Please pick another starting position or direction!!!\n\n");
+                    if (shipBoard[row + i][col] != 0){
+                        printf("\n!!! There is a ship in the way. Please pick another starting position or direction !!!\n\n");
                         validInput = false;
                         break;
                     }
@@ -92,12 +98,12 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
             }
             // Check if the ship can be placed horizontally and set the validInput flag to true if so.
             // Otherwise, validInput is set to false
-            else if (verticality == 'h' && ((row + ship->length) < WIDTH) ) {
+            else if (verticality == 'h' && ((col + ship->length) <= WIDTH) ) {
 
                 //Check for overlaps
                 for (int i = 1; i < ship->length; i++) {
-                    if (shipBoard[row + i][col] != 0){
-                        printf("\n!!!There is a ship in the way. Please pick another starting position or direction!!!\n\n");
+                    if (shipBoard[row][col + i] != 0){
+                        printf("\n!!! There is a ship in the way. Please pick another starting position or direction !!!\n\n");
                         validInput = false;
                         break;
                     }
@@ -108,7 +114,7 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
                 }
             }
             else { // If previous conditions fail, then the user would have to pick a new starting position
-                printf("\n!!!Cannot placed the ship either vertically or horizontally. Pick a new starting position!!!\n\n");
+                printf("\n!!! Cannot place the ship either vertically or horizontally. Pick a new starting position !!!\n\n");
                 continue;
             }
 
@@ -120,7 +126,7 @@ void generateBoard(int shipBoard[HEIGHT][WIDTH], Ship ships[NUM_SHIPS]) {
 
         // Place the ship in the shipBoard array
         addShip(shipBoard, *ship);
-        printf("\n✔ Ship #%d placed successfully! ✔\n\n", id);
+        printf("\n--- Ship #%d placed successfully! ---\n\n", id);
     }
 }
 
