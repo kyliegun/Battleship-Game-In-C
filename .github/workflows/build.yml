@@ -22,6 +22,7 @@ jobs:
           path: ./SinkingShips	
       
       - name: build test
+        if: ${{ always() }}
         run: make test; ./test <testing.txt >/dev/nul; gcov test-game.c
       
       - name: upload Results
