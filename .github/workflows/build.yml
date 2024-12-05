@@ -23,7 +23,7 @@ jobs:
       
       - name: build test
         if: ${{ always() }}
-        run: make test; ./test <testing.txt >/dev/nul; gcov test-game.c
+        run: make test; ./test <testing.txt >out.txt; gcov test-game.c
       
       - name: upload Results
         uses: actions/upload-artifact@v4
