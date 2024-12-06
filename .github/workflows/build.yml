@@ -29,15 +29,15 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: Test Results			
-          path: ./test_results.txt	
+          name: game.c Results			
+          path: ./game.c.gcov
       
       - name: upload opponentAI.c.gcov
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: Test Results			
-          path: ./test_results.txt	
+          name: opponentAI.c Results			
+          path: ./opponentAI.c.gcov	
 
       - name: build debug
         run: make debug; ./test_script >test_results.txt
