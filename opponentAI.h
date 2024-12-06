@@ -2,6 +2,7 @@
 
 void generateOpponentBoard(int shipBoard[][WIDTH], Ship ships[]);
 bool isShipValid(Ship ship, int shipBoard[][WIDTH]);
+int chooseOpponentDifficulty();
 
 void opponentShoot(int *x, int *y, int difficulty, int shotBoard[][WIDTH], Ship playerShips[]);
 Pos *freeSpace(int shotBoard[][WIDTH], int *size);

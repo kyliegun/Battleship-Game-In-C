@@ -13,10 +13,7 @@
 #include <time.h>
 #include "opponentAI.h"
 
-#define DEBUG
-
-// sets the seed for random number generation
-// #define SEED 1
+// #define DEBUG
 
 /**
  * @brief generates a randomized board for the opponent
@@ -81,6 +78,33 @@ bool isShipValid(Ship ship, int shipBoard[][WIDTH]) {
         }
     }
     return true;
+}
+
+/**
+ * @brief a brief section of user prompts to get input for difficulty level
+ * 
+ * @return int - the chosen difficulty
+ */
+int chooseOpponentDifficulty() {
+    int val;
+
+    while(1) {
+        printf("\nPlease enter an opponent difficulty: \n");
+        printf("\t1 - easy    2 - medium    3 - hard\n");
+
+        if (scanf(" %d", &val) == 0) {
+            scanf(" %*c");
+            printf("Bad input. Make sure you enter either a 1, 2, or 3\n");
+            continue;
+        } else if (val <= 0 || val > 3) {
+            printf("Bad input. Make sure you enter either a 1, 2, or 3\n");
+            continue;
+        }
+
+        printf("Difficulty %d chosen\n\n", val);
+
+        return val;
+    }
 }
 
 /**
@@ -186,7 +210,7 @@ Pos easyMode(int shotBoard[][WIDTH]) {
     int size;
     Pos target;
     Pos *coordArray = freeSpace(shotBoard, &size);
-    printf("size of options: %d\n", size);
+    // printf("size of options: %d\n", size);
 
     if (coordArray == NULL) {
         printf("No available shots. Something has gone wrong");
@@ -265,7 +289,7 @@ Pos hardMode(int shotBoard[][WIDTH], Ship ships[]) {
     int size = 0;
     Pos target;
     Pos *coordArray = findHitShipCoords(shotBoard, &size, ships);
-    printf("hit ships: %d\n", size);
+    // printf("hit ships: %d\n", size);
     for (int i=0;i < size;i++) {
         printf("x: %d, y: %d\n", coordArray[i].x, coordArray[i].y);
     }
