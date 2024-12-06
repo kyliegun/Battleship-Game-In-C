@@ -24,3 +24,16 @@ Sinking Ships is a strategic battleship game designed for single or multiplayer 
 - **9.** The game will end once all of a player's ships have been sunk.
 
 ## **Example Usage**
+- **User input:** _./SinkingShips_
+- **Output:** Enter the start position of the ship (A1-J10):
+
+- **User input:** _A1_
+- **Output:** Do you want the ship to be vertical or horizontal? (v/h):
+
+- **User input:** _v_
+
+_(Process repeats until all ships are placed)_
+
+![Battleship Game Screenshot](readme_exampleusage/GameBoardExample.png )
+
+_(User will continue selecting coordinates until the game ends)_
