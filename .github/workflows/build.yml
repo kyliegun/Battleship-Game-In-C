@@ -26,6 +26,7 @@ jobs:
         run: make test; ./test <testing.txt >out.txt; gcov test-game.c
       
       - name: upload Results
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: Test Results			
