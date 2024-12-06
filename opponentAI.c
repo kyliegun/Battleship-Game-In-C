@@ -1,6 +1,5 @@
 /**
  * @file opponentAI.c
- * @author Lukas Buehlmann (team 19)
  * @brief functions to simulate an opponent in battleship
  * @version v1.0.0
  * @date 2024-11-27
@@ -13,7 +12,7 @@
 #include <time.h>
 #include "opponentAI.h"
 
-#define DEBUG
+// #define DEBUG
 
 /**
  * @brief generates a randomized board for the opponent
