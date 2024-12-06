@@ -76,10 +76,14 @@ Pos getUserTarget() {
 }
 
 // provides some user output and returns whether a ship is hit or not
-bool analyseResult(int result) {
+bool analyseResult(int result, int targetVal, Ship ships[], int shotBoard[][WIDTH]) {
 	bool hit = false;
 	if (result) {
-		puts("Hit!");
+		if (isSunk(ships[targetVal-1], shotBoard)) {
+			puts("Hit and sunk!");
+		} else {
+			puts("Hit!");
+		}
 		hit = true;
 	} else {
 		puts("Missed!");
@@ -123,6 +127,7 @@ int main(int argc, char *argv[]) {
 	// generating both players ship boards
 	generateBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
 	generateOpponentBoard(opponentShipBoard, opponentShips);
+	drawBoard(opponentShipBoard, opponentShotBoard, opponentShips, shipBoard, shotBoard);
 
 	// main game loop
 	while(1) {
@@ -137,7 +142,7 @@ int main(int argc, char *argv[]) {
 			sleep(1);
 
 			// print output relating to result
-			if (!analyseResult(result)) {
+			if (!analyseResult(result, opponentShipBoard[target.y][target.x], opponentShips, shotBoard)) {
 				turn = (turn+1) % 2;
 			}
 			sleep(1);
@@ -156,7 +161,7 @@ int main(int argc, char *argv[]) {
 			sleep(1);
 
 			// print output relating to result
-			if (!analyseResult(result)) {
+			if (!analyseResult(result, shipBoard[yTarget][xTarget], ships, opponentShotBoard)) {
 				turn = (turn+1) % 2;
 			}
 			
