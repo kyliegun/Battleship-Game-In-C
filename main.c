@@ -5,6 +5,8 @@
 #include "game.h"
 #include "opponentAI.h"
 
+// #define DEBUG
+
 
 // function to display help message
 void displayHelp() {
@@ -23,8 +25,8 @@ void displayHelp() {
     printf("\nGood luck!\n");
 }
 
-
-int main(int argc, char *argv[]) {
+// handle flags given at startup. -1 for no actions, 0 for help printed, 1 for invalid input
+int flagHandler(int argc, char* argv[]) {
 	if (argc > 1){
 		for (int i = 1; i < argc; i++){
 			if (strcmp(argv[i], "--help") == 0){
@@ -32,7 +34,7 @@ int main(int argc, char *argv[]) {
 				return 0;
 			}else if (strcmp(argv[i], "--play") == 0){
 				printf("Game is starting!");
-				break;
+				return -1;
 			}else{
 				printf("Invalid argument: %s\n", argv[i]);
 				printf("Please use --help to view options.\n");
@@ -40,18 +42,67 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-	int shipBoard[HEIGHT][WIDTH] = {
-        {1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0},
-        {0, 0, 3, 3, 6, 0, 0, 0, 2, 0},
-        {0, 0, 0, 0, 6, 0, 0, 0, 2, 0},
-        {0, 0, 0, 0, 4, 0, 0, 0, 2, 0},
-        {0, 8, 0, 0, 4, 0, 0, 0, 2, 0},
-        {0, 8, 0, 0, 4, 0, 0, 5, 0, 0},
-        {0, 8, 0, 0, 4, 0, 0, 5, 0, 0},
-        {0, 7, 7, 7, 7, 7, 7, 5, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-    };
+	return -1;
+}
+
+// helper function to get the user's desired target coordinates
+Pos getUserTarget() {
+	Pos target;
+	char rowChar;
+
+	while (1) {
+		printf("\nEnter your shot (e.g., A1, B2): ");
+		if (!scanf(" %c %d" , &rowChar, &target.x)) {
+			scanf(" %*c");
+			printf("Invalid input. Please enter a valid letter and number\n\n");
+			continue;
+		}
+
+		// subtract ASCII 'A' val to map to a number from 0 to 9
+		target.y = (int)rowChar - 65;
+
+		// subtract 1 from x to map to width of list indices
+		target.x--;
+
+		if (target.y < 0 || target.y >= HEIGHT || target.x < 0 || target.x >= WIDTH) {
+			printf("Invalid coordinates. Please try again.\n");
+			continue;
+		}
+		break;
+
+	}
+
+	return target;
+}
+
+// provides some user output and returns whether a ship is hit or not
+bool analyseResult(int result, int targetVal, Ship ships[], int shotBoard[][WIDTH]) {
+	bool hit = false;
+	if (result) {
+		if (isSunk(ships[targetVal-1], shotBoard)) {
+			puts("Hit and sunk!");
+		} else {
+			puts("Hit!");
+		}
+		hit = true;
+	} else {
+		puts("Missed!");
+	}
+	return hit;
+}
+
+int main(int argc, char *argv[]) {
+	switch(flagHandler(argc, argv)) {
+		case 0:
+			return EXIT_SUCCESS;
+			break;
+		case 1:
+			return EXIT_FAILURE;
+			break;
+	}
+
+	// initialise all player and opponent information
+	int shipBoard[HEIGHT][WIDTH] = {0};
 	int shotBoard[HEIGHT][WIDTH] = {0};
 	int opponentShipBoard[HEIGHT][WIDTH] = {0};
 	int opponentShotBoard[HEIGHT][WIDTH] = {0};
@@ -59,90 +110,66 @@ int main(int argc, char *argv[]) {
 	Ship opponentShips[NUM_SHIPS];
 
 	int turn = 0;
-
-	// generating the player shipBoard
-	generateBoard(shipBoard, ships);
-	generateOpponentBoard(opponentShipBoard, opponentShips);
-	// drawBoard(opponentShipBoard, opponentShotBoard, opponentShips, shipBoard, shotBoard);
-
-
-	int x, y;
+	int difficulty;
+	
 	int xTarget;
 	int yTarget;
 	Pos target;
 	int result;
+	
+	#ifdef DEBUG
+		difficulty = 1;
+	#endif
+	#ifndef DEBUG
+		difficulty = chooseOpponentDifficulty();
+	#endif
+
+	// generating both players ship boards
+	generateBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
+	generateOpponentBoard(opponentShipBoard, opponentShips);
+	drawBoard(opponentShipBoard, opponentShotBoard, opponentShips, shipBoard, shotBoard);
 
 	// main game loop
-	while(1){
-		if (turn == 0) {
-			// drawing the boards
+	while(1) {
+
+		// player turn
+		if (!turn) {
 			drawBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
-			printf("\n");
 
-			// asking the player for cooridnates
-			printf("Enter your shot (e.g., A1, B2): ");
-			char rowChar;
-			int col;
-			scanf("%c %d" , &rowChar, &col); // reads input row and column
-
-			// convert the row from letter to index
-			int row = rowChar - 'A';
-
-			// checking if thr shot is within bounds
-			if (row < 0 || row >= HEIGHT || col < 1 || col > WIDTH){
-				printf("Invalid coordinates. Please try again.\n");
-				continue;
-			}
-
-			result = shoot(col - 1, row, opponentShotBoard, shotBoard);
-
+			// get user input to shoot at a target location
+			target = getUserTarget();
+			result = shoot(target.x, target.y, opponentShipBoard, shotBoard);
 			sleep(1);
 
-			if(result == 0){
-				printf("Missed!\n");
-			}else if(result == 1){
-				printf("Hit!\n");
-			}else if(result == 2){
-				printf("You sunk a ship!\n");
+			// print output relating to result
+			if (!analyseResult(result, opponentShipBoard[target.y][target.x], opponentShips, shotBoard)) {
+				turn = (turn+1) % 2;
 			}
-
 			sleep(1);
-
+			
 			// checking if all ships are sunk
-			if(countShipsLeft(ships, opponentShotBoard) == 0){
+			if(countShipsLeft(opponentShips, shotBoard) == 0){
 				printf("Congratulations! You have sunk all ships.\n");
 				break;
 			}
-
-			turn++;
-			turn = turn % 2;
 		} else {
 
-			xTarget = 0;
-			yTarget = 0;
-
-			opponentShoot(&xTarget, &yTarget, 2, opponentShotBoard, ships);
+			opponentShoot(&xTarget, &yTarget, difficulty, opponentShotBoard, ships);
 			printf("\n\nOpponent shoots at %c%d\n\n", yTarget+65, xTarget+1);
 
 			result = shoot(xTarget, yTarget, shipBoard, opponentShotBoard);
 			sleep(1);
 
-			if(result == 0){
-				printf("Missed!\n\n");
-			}else if(result == 1){
-				printf("Hit!\n\n");
-			}else if(result == 2){
-				printf("You sunk a ship!\n\n");
+			// print output relating to result
+			if (!analyseResult(result, shipBoard[yTarget][xTarget], ships, opponentShotBoard)) {
+				turn = (turn+1) % 2;
 			}
-			sleep(1);
-
+			
 			// checking if all ships are sunk
 			if(countShipsLeft(ships, opponentShotBoard) == 0){
 				printf("You have been defeated\n");
 				break;
 			}
-
-			turn = (turn + 1) % 2;
 		}
 
 	}

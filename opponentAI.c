@@ -1,6 +1,5 @@
 /**
  * @file opponentAI.c
- * @author Lukas Buehlmann (team 19)
  * @brief functions to simulate an opponent in battleship
  * @version v1.0.0
  * @date 2024-11-27
@@ -13,10 +12,7 @@
 #include <time.h>
 #include "opponentAI.h"
 
-#define DEBUG
-
-// sets the seed for random number generation
-// #define SEED 1
+// #define DEBUG
 
 /**
  * @brief generates a randomized board for the opponent
@@ -84,6 +80,33 @@ bool isShipValid(Ship ship, int shipBoard[][WIDTH]) {
 }
 
 /**
+ * @brief a brief section of user prompts to get input for difficulty level
+ * 
+ * @return int - the chosen difficulty
+ */
+int chooseOpponentDifficulty() {
+    int val;
+
+    while(1) {
+        printf("\nPlease enter an opponent difficulty: \n");
+        printf("\t1 - easy    2 - medium    3 - hard\n");
+
+        if (scanf(" %d", &val) == 0) {
+            scanf(" %*c");
+            printf("Bad input. Make sure you enter either a 1, 2, or 3\n");
+            continue;
+        } else if (val <= 0 || val > 3) {
+            printf("Bad input. Make sure you enter either a 1, 2, or 3\n");
+            continue;
+        }
+
+        printf("Difficulty %d chosen\n\n", val);
+
+        return val;
+    }
+}
+
+/**
  * @brief Finds all 0 elements of a 2D array and returns an array of position values(x, y)
  * 
  * @param shotBoard - The board to check for empty spaces
@@ -130,8 +153,7 @@ Pos *findHitShipCoords(int shotBoard[][WIDTH], int *size, Ship ships[]) {
     bool shipSunk;
     int n = 0;
     Ship ship;
-    int hit;
-    int hitCount;
+    Pos shipPiece;
 
     // find the max ship length
     int longestShip = 0;
@@ -141,33 +163,24 @@ Pos *findHitShipCoords(int shotBoard[][WIDTH], int *size, Ship ships[]) {
         }
     }
 
-    Pos shipCoords[longestShip];
-    Pos shipPiece;
-
     // loop through each ship and find coordinates of ships that are hit but not sunk
     for (int i = 0;i < NUM_SHIPS;i++) {
         ship = ships[i];
-        hitCount = 0;
+
+        if (isSunk(ship, shotBoard)) {
+            continue;
+        }
         
         // first copy all ship positions that are hit into shipCoord and track total hit
         for (int j = 0; j < ship.length; j++) {
             shipPiece.y = ship.headpos.y + j*ship.isVertical;
             shipPiece.x = ship.headpos.x + j*(!ship.isVertical);
 
-            hit = shotBoard[shipPiece.y][shipPiece.x];
-            if (hit == 1) {
-                shipCoords[j].x = shipPiece.x;
-                shipCoords[j].y = shipPiece.y;
-                hitCount++;
+            if (shotBoard[shipPiece.y][shipPiece.x] == 1) {
+                (coords+n) -> x = shipPiece.x;
+                (coords+n) -> y = shipPiece.y;
+                n++;
             }
-        }
-
-        // make sure the ship is hit but not sunk and then add those values into the coords
-        if (0 < hitCount && hitCount < ship.length) {
-            for (int k=0;k < hitCount;k++) {
-                coords[n + k] = shipCoords[k];
-            }
-            n += hitCount;
         }
     }
 
@@ -186,7 +199,7 @@ Pos easyMode(int shotBoard[][WIDTH]) {
     int size;
     Pos target;
     Pos *coordArray = freeSpace(shotBoard, &size);
-    printf("size of options: %d\n", size);
+    // printf("size of options: %d\n", size);
 
     if (coordArray == NULL) {
         printf("No available shots. Something has gone wrong");
@@ -206,7 +219,7 @@ Pos easyMode(int shotBoard[][WIDTH]) {
  * @return Pos - The position to shoot at
  */
 Pos mediumMode(int shotBoard[][WIDTH], Ship ships[]) {
-    int size;
+    int size = 0;
     Pos target;
     Pos *coordArray = findHitShipCoords(shotBoard, &size, ships);
 
@@ -216,44 +229,40 @@ Pos mediumMode(int shotBoard[][WIDTH], Ship ships[]) {
     }
 
     // chooses a random position within the available spaces
-    int randNum = rand() % (size + 1);
+    int randNum = rand() % size;
     target = *(coordArray + randNum);
     free(coordArray);
     coordArray = NULL;
 
-    // choose a random shift direction
-    randNum = randNum % 4;
-    switch (randNum) {
-        case 0:
-            // left side of target
-            if (target.x > 0 && shotBoard[target.y][target.x-1] == 0) {
-                target.x--;
-                return target;
-            }
-        case 1:
-            // right side of target
-            if (target.x < WIDTH - 1 && shotBoard[target.y][target.x+1] == 0) {
-                target.x++;
-                return target;
-            }
-        case 2:
-            // top side of target
-            if (target.y > 0 && shotBoard[target.y-1][target.x] == 0) {
-                target.y--;
-                return target;
-            }
-        case 3:
-            // bottom side of target
-            if (target.y < HEIGHT - 1 && shotBoard[target.y+1][target.x] == 0) {
-                target.y++;
-                return target;
-            }
-        default:
-            target = easyMode(shotBoard);
-
+    // left side of target
+    if (target.x > 0 && (shotBoard[target.y][target.x-1] == 0)) {
+        target.x--;
+        return target;
     }
+
+    // right side of target
+    if (target.x < WIDTH - 1 && (shotBoard[target.y][target.x+1] == 0)) {
+        target.x++;
+        return target;
+    }
+
+    // top side of target
+    if (target.y > 0 && (shotBoard[target.y-1][target.x] == 0)) {
+        target.y--;
+        return target;
+    }
+
+    // bottom side of target
+    if (target.y < HEIGHT - 1 && (shotBoard[target.y+1][target.x] == 0)) {
+        target.y++;
+        return target;
+    }
+
+    target = easyMode(shotBoard);
+
     return target;
 }
+
 
 /**
  * @brief The hard opponent difficulty. Shoots at every other cell and can track hit ships
@@ -265,10 +274,6 @@ Pos hardMode(int shotBoard[][WIDTH], Ship ships[]) {
     int size = 0;
     Pos target;
     Pos *coordArray = findHitShipCoords(shotBoard, &size, ships);
-    printf("hit ships: %d\n", size);
-    for (int i=0;i < size;i++) {
-        printf("x: %d, y: %d\n", coordArray[i].x, coordArray[i].y);
-    }
 
     // create a shotboard replica where every other cell is a 1
     // This tricks the easyMode function into only shooting at every other cell
@@ -280,9 +285,7 @@ Pos hardMode(int shotBoard[][WIDTH], Ship ships[]) {
             } else {
                 fakeShotBoard[i][j] = 1;
             }
-            // printf("%d ", fakeShotBoard[i][j]);
         }
-        // printf("\n");
     }
 
     if (size == 0 && coordArray == NULL) {
@@ -291,42 +294,37 @@ Pos hardMode(int shotBoard[][WIDTH], Ship ships[]) {
     }
 
     // chooses a random position within the available spaces
-    int randNum = rand() % (size + 1);
+    int randNum = rand() % size;
     target = *(coordArray + randNum);
     free(coordArray);
     coordArray = NULL;
 
-    // choose a random shift direction
-    randNum = randNum % 4;
-    switch (randNum) {
-        case 0:
-            // left side of target
-            if (target.x > 0 && (shotBoard[target.y][target.x-1] == 0)) {
-                target.x--;
-                return target;
-            }
-        case 1:
-            // right side of target
-            if (target.x < WIDTH - 1 && (shotBoard[target.y][target.x+1] == 0)) {
-                target.x++;
-                return target;
-            }
-        case 2:
-            // top side of target
-            if (target.y > 0 && (shotBoard[target.y-1][target.x] == 0)) {
-                target.y--;
-                return target;
-            }
-        case 3:
-            // bottom side of target
-            if (target.y < HEIGHT - 1 && (shotBoard[target.y+1][target.x] == 0)) {
-                target.y++;
-                return target;
-            }
-        default:
-            target = easyMode(fakeShotBoard);
-
+    // left side of target
+    if (target.x > 0 && (shotBoard[target.y][target.x-1] == 0)) {
+        target.x--;
+        return target;
     }
+
+    // right side of target
+    if (target.x < WIDTH - 1 && (shotBoard[target.y][target.x+1] == 0)) {
+        target.x++;
+        return target;
+    }
+
+    // top side of target
+    if (target.y > 0 && (shotBoard[target.y-1][target.x] == 0)) {
+        target.y--;
+        return target;
+    }
+
+    // bottom side of target
+    if (target.y < HEIGHT - 1 && (shotBoard[target.y+1][target.x] == 0)) {
+        target.y++;
+        return target;
+    }
+
+    target = easyMode(fakeShotBoard);
+
     return target;
 }
 
