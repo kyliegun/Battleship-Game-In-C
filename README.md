@@ -10,7 +10,7 @@ Sinking Ships is a strategic battleship game designed for single or multiplayer 
 - **Interactive Gameplay**: Players can input coordinates to target opponent ships and receive feedback on hits, misses, and sinks. 
 - **Opponent AI**: A simple AI algorithm for the computer opponent to shoot at the player’s board. 
 - **Dynamic Game Board**: Real-time updates to the boards for both players. 
-- **Help System**: Display detailed instructions and usage information via the ‘--help’ argument.
+- **Help System**: Display detailed instructions and usage information via the _--help_ argument.
 
 ## **How to Play & Rules**
 - **1.** This is a terminal-based game. 
