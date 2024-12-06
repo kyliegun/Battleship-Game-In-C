@@ -1,6 +1,6 @@
 # the-team-assignment-team-19
 
-##SINKING SHIPS
+## SINKING SHIPS
 
 **Built with:** C, ASCII, Bash
 
