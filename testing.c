@@ -13,18 +13,7 @@
 int main(int argc, char *argv[]) {
     int shipBoard[HEIGHT][WIDTH] = {0};
 	int shotBoard[HEIGHT][WIDTH] = {0};
-	int opponentShipBoard[HEIGHT][WIDTH] = {
-        {1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0},
-        {0, 0, 3, 3, 6, 0, 0, 0, 2, 0},
-        {0, 0, 0, 0, 6, 0, 0, 0, 2, 0},
-        {0, 0, 0, 0, 4, 0, 0, 0, 2, 0},
-        {0, 8, 0, 0, 4, 0, 0, 0, 2, 0},
-        {0, 8, 0, 0, 4, 0, 0, 5, 0, 0},
-        {0, 8, 0, 0, 4, 0, 0, 5, 0, 0},
-        {0, 7, 7, 7, 7, 7, 7, 5, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-    };
+	int opponentShipBoard[HEIGHT][WIDTH] = {0};
 	int opponentShotBoard[HEIGHT][WIDTH] = {0};
     int testboard[HEIGHT][WIDTH] = {
         {1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
@@ -38,11 +27,24 @@ int main(int argc, char *argv[]) {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 1, 1}
     };
+    int opponentTestBoard[HEIGHT][WIDTH] = {
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 1, 0, 0, 0, 1, 0, 0, 0},
+        {0, 0, 1, 0, 0, 0, 1, 0, 0, 0},
+        {0, 0, 1, 1, 1, 1, 1, 1, 1, 0},
+        {0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 1, 1, 1, 0, 0, 0, 0, 0}
+    };
 
 	Ship ships[NUM_SHIPS];
 	Ship opponentShips[NUM_SHIPS];
 
     generateBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
+    generateOpponentBoard(opponentShipBoard, opponentShips);
     drawBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
 
     if (countShipsLeft(ships, opponentShotBoard) != NUM_SHIPS) return 5;
@@ -58,8 +60,15 @@ int main(int argc, char *argv[]) {
     if (!isSunk(ships[2], opponentShotBoard)) return 3;
     if (countShipsLeft(ships, opponentShotBoard) != 1) return 4;
 
-    shoot(0, 0, opponentShipBoard, shotBoard);
-    shoot(8, 9, opponentShipBoard, shotBoard);
 
+    if (countShipsLeft(opponentShips, shotBoard) != NUM_SHIPS) return 5;
+    int x, y;
+    int diff;
+    while (countShipsLeft(opponentShips, shotBoard) > 0) {
+        opponentShoot(&x, &y, diff%4, shotBoard, opponentShips);
+        if (diff != 0 && shoot(x, y, opponentShipBoard, shotBoard) != opponentTestBoard[y][x]) return 11;
+        diff++;
+    }
+    
     drawBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
 }

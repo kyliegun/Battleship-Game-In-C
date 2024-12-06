@@ -13,8 +13,6 @@
 #include <time.h>
 #include "opponentAI.h"
 
-#define DEBUG
-
 // sets the seed for random number generation
 // #define SEED 1
 
