@@ -112,3 +112,27 @@ Game logic code: November 19, 2024
 Main code: November 19, 2024
 Opponent AI: TBD
 Testing: TBD
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~CHANGES MADE AS OF END OF PROJECT (end date: 05/12/2024)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A few of the goals of the program were removed by the end of this project. This includes the planned achievement system
+which was never implemented into the game. We also decided to leave the game as versus a computer only, there is no 
+local multiplayer option. These cuts to elements of the game were due to time constraints and are still possible to be
+added into the game for a future increment. The remaining elements set out in our high level description have all been 
+met as of this end date. The increments have also changed:
+
+Increment 1 - finish date: Nov. 27, 2024:
+  The program is functional and allows for gameplay between the player and a completely random computer opponent. A 
+  wrokflow is created at this point to automate the integration process. The main difference between the original goal
+  and the result is that it took a week longer than planned. All member responsibilities remained the same.
+
+Increment 2 - finish date: Dec. 5, 2024:
+  The game now allows for 3 different opponent difficulties to play against and is built to be easily modified in code 
+  to work on an NxM board and can even have a variable amount of ships and lengths. The player can setup their own board
+  however they like and the computer board is randomly generated with an optional seed setting ability for debugging.
+  The testing workflow is fully automated and coverage reports are generated as well. There were many improvements to
+  user friendliness and the robustness of program for handling improper input. As for changes from the original plan, 
+  this is now being submitted as the final product instead of our more ambitious original goals for a third increment.
+  There is no powerup, achievement system, or LAN capabilities, which was expected upon the creation of the original 
+  development plan since these would be the last elements to work on if we found ourselves far ahead of schedule.
