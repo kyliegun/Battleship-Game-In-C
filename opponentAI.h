@@ -5,6 +5,7 @@ void generateOpponentBoard(int shipBoard[][WIDTH], Ship ships[]);
 
 // checks if a given ship can be placed in the board without any overlap of existing ships
 bool isShipValid(Ship ship, int shipBoard[][WIDTH]);
+int chooseOpponentDifficulty();
 
 // prompts to let user chooes the difficulty level of the opponent
 int chooseOpponentDifficulty();

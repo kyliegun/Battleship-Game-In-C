@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <ctype.h>
 #include "game.h"
 #include "opponentAI.h"
 
@@ -59,7 +60,10 @@ Pos getUserTarget() {
 		}
 
 		// subtract ASCII 'A' val to map to a number from 0 to 9
-		target.y = (int)rowChar - 65;
+    
+		rowChar = tolower(rowChar);
+		target.y = rowChar - 'a';
+
 
 		// subtract 1 from x to map to width of list indices
 		target.x--;
@@ -117,17 +121,16 @@ int main(int argc, char *argv[]) {
 	Pos target;
 	int result;
 	
-	#ifdef DEBUG
-		difficulty = 1;
-	#endif
-	#ifndef DEBUG
-		difficulty = chooseOpponentDifficulty();
-	#endif
+
+	difficulty = chooseOpponentDifficulty();
+
 
 	// generating both players ship boards
 	generateBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
 	generateOpponentBoard(opponentShipBoard, opponentShips);
-	drawBoard(opponentShipBoard, opponentShotBoard, opponentShips, shipBoard, shotBoard);
+
+	drawBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
+
 
 	// main game loop
 	while(1) {
@@ -139,13 +142,19 @@ int main(int argc, char *argv[]) {
 			// get user input to shoot at a target location
 			target = getUserTarget();
 			result = shoot(target.x, target.y, opponentShipBoard, shotBoard);
+
+			#ifndef DEBUG 
 			sleep(1);
+			#endif
 
 			// print output relating to result
 			if (!analyseResult(result, opponentShipBoard[target.y][target.x], opponentShips, shotBoard)) {
 				turn = (turn+1) % 2;
 			}
+      
+			#ifndef DEBUG 
 			sleep(1);
+			#endif
 			
 			// checking if all ships are sunk
 			if(countShipsLeft(opponentShips, shotBoard) == 0){
@@ -158,7 +167,9 @@ int main(int argc, char *argv[]) {
 			printf("\n\nOpponent shoots at %c%d\n\n", yTarget+65, xTarget+1);
 
 			result = shoot(xTarget, yTarget, shipBoard, opponentShotBoard);
+			#ifndef DEBUG 
 			sleep(1);
+			#endif
 
 			// print output relating to result
 			if (!analyseResult(result, shipBoard[yTarget][xTarget], ships, opponentShotBoard)) {
@@ -173,6 +184,11 @@ int main(int argc, char *argv[]) {
 		}
 
 	}
+
+	printf("Your Boards\n");
+	drawBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
+	printf("\nYour opponents Boards\n");
+	drawBoard(opponentShipBoard, opponentShotBoard, opponentShips, shipBoard, shotBoard);
 
 	return 0;
 
