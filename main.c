@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
 	// generating both players ship boards
 	generateBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
 	generateOpponentBoard(opponentShipBoard, opponentShips);
-	drawBoard(opponentShipBoard, opponentShotBoard, opponentShips, shipBoard, shotBoard);
+	drawBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
 
 	// main game loop
 	while(1) {
@@ -182,6 +182,9 @@ int main(int argc, char *argv[]) {
 
 	}
 
+	printf("Your Boards\n");
+	drawBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
+	printf("\nYour opponents Boards\n");
 	drawBoard(opponentShipBoard, opponentShotBoard, opponentShips, shipBoard, shotBoard);
 
 	return 0;
