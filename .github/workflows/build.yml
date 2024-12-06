@@ -2,7 +2,7 @@ name: build script for Battleship Game
 
 on:							
   push:
-    branches: [ "main" ]			
+    branches: [ "main", "Connor" ]			
 
 jobs:
   build:						
@@ -20,6 +20,24 @@ jobs:
         with:
           name: SinkingShips
           path: ./SinkingShips	
+      
+      - name: build test
+        if: ${{ always() }}
+        run: make test; ./test <testing.txt >out.txt; gcov test-game.c; gcov test-opponentAI.c
+      
+      - name: upload game.c.gcov
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Results			
+          path: ./test_results.txt	
+      
+      - name: upload opponentAI.c.gcov
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Results			
+          path: ./test_results.txt	
         
 
 

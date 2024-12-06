@@ -12,8 +12,6 @@
 #include <time.h>
 #include "opponentAI.h"
 
-// #define DEBUG
-
 /**
  * @brief generates a randomized board for the opponent
  * 
