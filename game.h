@@ -40,7 +40,7 @@ void addShip(int shipBoard[HEIGHT][WIDTH], Ship ship);
 int shoot(int x, int y, int targetBoard[][WIDTH], int shotBoard[][WIDTH]);
 
 //Checks if a specific ship with ID 'id' is sunk based on shots fired and the ship's position
-bool isSunk(Ship ships, int shotBoard[][WIDTH]);
+bool isSunk(Ship ship, int shotBoard[][WIDTH]);
 
 //Counts how many ships are left, based on shipBoard and shots taken
 int countShipsLeft(Ship ships[], int shotBoard[][WIDTH]);
