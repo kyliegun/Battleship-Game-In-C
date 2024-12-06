@@ -1,6 +1,5 @@
 /**
  * @file opponentAI.c
- * @author Lukas Buehlmann (team 19)
  * @brief functions to simulate an opponent in battleship
  * @version v1.0.0
  * @date 2024-11-27

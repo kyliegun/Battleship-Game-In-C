@@ -60,8 +60,10 @@ Pos getUserTarget() {
 		}
 
 		// subtract ASCII 'A' val to map to a number from 0 to 9
+    
 		rowChar = tolower(rowChar);
 		target.y = rowChar - 'a';
+
 
 		// subtract 1 from x to map to width of list indices
 		target.x--;
@@ -119,17 +121,16 @@ int main(int argc, char *argv[]) {
 	Pos target;
 	int result;
 	
-	#ifndef DEBUG
-		difficulty = 1;
-	#endif
-	#ifndef DEBUG
-		difficulty = chooseOpponentDifficulty();
-	#endif
+
+	difficulty = chooseOpponentDifficulty();
+
 
 	// generating both players ship boards
 	generateBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
 	generateOpponentBoard(opponentShipBoard, opponentShips);
+
 	drawBoard(shipBoard, shotBoard, ships, opponentShipBoard, opponentShotBoard);
+
 
 	// main game loop
 	while(1) {
@@ -141,6 +142,7 @@ int main(int argc, char *argv[]) {
 			// get user input to shoot at a target location
 			target = getUserTarget();
 			result = shoot(target.x, target.y, opponentShipBoard, shotBoard);
+
 			#ifndef DEBUG 
 			sleep(1);
 			#endif
@@ -149,6 +151,7 @@ int main(int argc, char *argv[]) {
 			if (!analyseResult(result, opponentShipBoard[target.y][target.x], opponentShips, shotBoard)) {
 				turn = (turn+1) % 2;
 			}
+      
 			#ifndef DEBUG 
 			sleep(1);
 			#endif
